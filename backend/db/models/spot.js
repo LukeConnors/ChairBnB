@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        len: [9,12],
+        len: [4,12],
         isFloat: true
       }
     },
@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        len: [9,12],
+        len: [4,12],
         isFloat: true
       }
     },
@@ -97,7 +97,7 @@ module.exports = (sequelize, DataTypes) => {
         isInt: true
       }
     },
-    preview_img: {
+    previewImg: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
