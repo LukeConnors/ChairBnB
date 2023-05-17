@@ -49,7 +49,9 @@ module.exports = (sequelize, DataTypes) => {
     stars: {
       type: DataTypes.INTEGER,
       validate: {
-        isInt: true
+        isInt: true,
+        min: 1,
+        max: 5
       },
       allowNull: false
     }
