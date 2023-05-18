@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         isInt: true
       }
     },
-    imagableType: {
+    imageableType: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {

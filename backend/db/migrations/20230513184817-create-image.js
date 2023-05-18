@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      imagableType: {
+      imageableType: {
         type: Sequelize.STRING,
         allowNull: false
       },

@@ -12,7 +12,7 @@ module.exports = {
     {
       spotId: 1,
       userId: 5,
-      review: 'Sitting on this comfortable chair was like sitting on a cloud! Highly recommend!',
+      review: "Sitting on this comfortable chair was like sitting on a cloud! Highly recommend, though it was not the same chair as in the host's photo ",
       stars: 5,
     },
     {
