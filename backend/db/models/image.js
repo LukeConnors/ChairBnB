@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isInt: false
+        isIn: [["Spot", "Review"]]
       }
     },
     url: {

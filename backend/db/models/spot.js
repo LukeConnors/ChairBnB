@@ -17,15 +17,15 @@ module.exports = (sequelize, DataTypes) => {
       )
       Spot.hasMany(
         models.Booking,
-        {foreignKey: 'spotId', onDelete: 'CASCADE', hooks: true}
+        {foreignKey: 'spotId'}
       )
       Spot.belongsTo(
         models.User,
-        {foreignKey: 'ownerId', onDelete: 'CASCADE', hooks: true}
+        {foreignKey: 'ownerId'}
       )
       Spot.hasMany(
         models.Review,
-        {foreignKey: 'spotId', onDelete: 'CASCADE', hooks: true}
+        {foreignKey: 'spotId'}
       )
     }
   }
@@ -99,7 +99,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     previewImg: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         isUrl: true
       }
