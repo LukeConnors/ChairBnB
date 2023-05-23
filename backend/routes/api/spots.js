@@ -123,6 +123,7 @@ router.post('/:spotId/images', async (req, res, next) => {
 
 })
 
+// edit a spot by spotId
 router.put('/:spotId', async (req, res, next) => {
 const {address, city, state, country, lat, lng, name, description, price} = req.body;
 const spot = await Spot.findByPk(req.params.spotId);
@@ -141,6 +142,7 @@ await spot.update({
 res.json(spot)
 })
 
+// DELETE spot by spotId
 router.delete('/:spotId', async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId)
     if(!spot){
