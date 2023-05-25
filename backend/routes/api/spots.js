@@ -3,6 +3,7 @@ const {Spot, User, Image, Booking} = require('../../db/models')
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { Op } = require('sequelize');
 
 
 const validateSpot = [
@@ -72,7 +73,36 @@ const validateSpot = [
 
 // GET all Spots
 router.get('/', async (req, res, next) => {
-const spots = await Spot.findAll()
+let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+const filters = {};
+
+if(!page) page = 1
+if(!size) size = 20
+
+if (minLat) {
+  filters.lat = { [Op.gte]: parseFloat(minLat) };
+}
+if (maxLat) {
+  filters.lat = { ...filters.lat, [Op.lte]: parseFloat(maxLat) };
+}
+
+if (minLng) {
+  filters.lng = { [Op.gte]: parseFloat(minLng) };
+}
+if (maxLng) {
+  filters.lng = { ...filters.lng, [Op.lte]: parseFloat(maxLng) };
+}
+if (minPrice) {
+  filters.price = { [Op.gte]: parseInt(minPrice) };
+}
+if (maxPrice) {
+  filters.price = { ...filters.price, [Op.lte]: parseInt(maxPrice) };
+}
+const spots = await Spot.findAll({
+  where: filters,
+  limit: parseInt(size),
+  offset: (parseInt(page) - 1) * parseInt(size)
+})
 return res.json(spots)
 })
 
