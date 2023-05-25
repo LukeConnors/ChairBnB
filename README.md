@@ -1,5 +1,8 @@
 # `<name of application here>`
 
+## Link to Live Site
+https://lukes-chairbnb.onrender.com/
+
 ## Database Schema Design
 
 `<insert database schema design here>`
@@ -287,7 +290,7 @@ Returns all the spots owned (created) by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: '/spots/mySpots'
+  * URL: '/spots/current'
   * Body: none
 
 * Successful Response
@@ -634,7 +637,7 @@ Returns all the reviews written by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: '/users/profile/reviews'
+  * URL: '/reviews/current'
   * Body: none
 
 * Successful Response
@@ -823,7 +826,7 @@ Create and return a new image for a review specified by id.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: POST
-  * URL: 'reviews/:reviewId/images'
+  * URL: '/reviews/:reviewId/images'
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -982,7 +985,7 @@ Return all the bookings that the current user has made.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: 'users/profile/bookings'
+  * URL: '/bookings/current'
   * Body: none
 
 * Successful Response
@@ -1174,7 +1177,7 @@ Update and return an existing booking.
 * Require proper authorization: Booking must belong to the current user
 * Request
   * Method: PUT
-  * URL: 'bookings/:bookingId'
+  * URL: '/bookings/:bookingId'
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1268,7 +1271,7 @@ Delete an existing booking.
   Spot must belong to the current user
 * Request
   * Method: DELETE
-  * URL: 'bookings/:bookingId'
+  * URL: '/bookings/:bookingId'
   * Body: none
 
 * Successful Response
@@ -1317,7 +1320,7 @@ Delete an existing image for a Spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: DELETE
-  * URL: '/spots/:spotId/images/:imageId'
+  * URL: '/spot-images/:imageId'
   * Body: none
 
 * Successful Response
@@ -1352,7 +1355,7 @@ Delete an existing image for a Review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: DELETE
-  * URL: '/reviews/:reviewId/images/:imageId'
+  * URL: '/review-images/:imageId'
   * Body: none
 
 * Successful Response
