@@ -1,9 +1,10 @@
 const express = require('express');
-const {Spot, User, Image, Booking} = require('../../db/models')
+const {Spot, User, Image, Booking, Review} = require('../../db/models')
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require('sequelize');
+const Sequelize = require('sequelize');
 
 
 const validateSpot = [
@@ -72,6 +73,7 @@ const validateSpot = [
 
 
 // GET all Spots
+// Fixed; but new issue where it only returns one spot.
 router.get('/', async (req, res, next) => {
 let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 const filters = {};
@@ -98,27 +100,95 @@ if (minPrice) {
 if (maxPrice) {
   filters.price = { ...filters.price, [Op.lte]: parseInt(maxPrice) };
 }
+
 const spots = await Spot.findAll({
   where: filters,
   limit: parseInt(size),
-  offset: (parseInt(page) - 1) * parseInt(size)
+  offset: (parseInt(page) - 1) * parseInt(size),
+  include: {
+    model: Review,
+    attributes: [],
+    duplicating: false,
+    required: false,
+  },
+  attributes: [
+    'id',
+    'ownerId',
+    'address',
+    'city',
+    'state',
+    'lat',
+    'lng',
+    'name',
+    'description',
+    'price',
+    'createdAt',
+    'updatedAt',
+    [Sequelize.literal('(SELECT AVG(stars) FROM Reviews)'), 'avgStarRating'],
+    'previewImg'
+  ],
 })
-return res.json(spots)
+return res.json({
+  Spots: spots,
+  page: page,
+  size: size
+  })
 })
 
-// GET all Spots by current User
-router.get('/current', async (req, res, next) => {
-const user = req.user
-const spots = await Spot.findAll({where: {ownerId: user.id}})
-res.json(spots)
-})
 
 // GET spot details by ID
+// needs numReviews, and avgStarRating in spot data
 router.get('/:spotId', async (req, res, next) => {
+
+const numReviews = Sequelize.fn('COUNT', Sequelize.col('Reviews.id'));
+const avgStarRating = Sequelize.fn('AVG', Sequelize.col('Reviews.stars'));
+
 let spotId = req.params.spotId
+
 const spot = await Spot.findOne({
     where: {id: spotId},
-    include: [{model: Image}, {model: User}]
+    include: [
+      {
+        model: Image, as: 'SpotImages',
+        attributes: [
+          'id',
+          'url',
+          'preview'
+        ]
+      },
+      {
+        model: Review,
+        attributes: [],
+        duplicating: false,
+        required: false,
+      },
+      {
+        model: User,
+        as: 'Owner',
+        attributes: [
+          'id',
+          'firstName',
+          'lastName'
+        ],
+      },
+    ],
+    attributes: [
+      'id',
+      'ownerId',
+      'address',
+      'city',
+      'state',
+      'lat',
+      'lng',
+      'name',
+      'description',
+      'price',
+      'createdAt',
+      'updatedAt',
+      [numReviews, 'numReviews'],
+      [avgStarRating, 'avgStarRating'],
+    ],
+    group: ['Spot.id', 'Owner.id'],
 })
 if(!spot){
 res.status(404).json({message: "Spot couldn't be found"})
@@ -145,7 +215,19 @@ const newSpot = await Spot.create({
     price,
 
 })
-res.json(newSpot)
+
+
+res.json({
+  address: newSpot.address,
+  city: newSpot.city,
+  state: newSpot.state,
+  country: newSpot.country,
+  lat: newSpot.lat,
+  lng: newSpot.lng,
+  name: newSpot.name,
+  description: newSpot.description,
+  price: newSpot.price
+})
     } catch(err){
         next({
             status: 400,
@@ -159,19 +241,25 @@ res.json(newSpot)
 router.post('/:spotId/images', async (req, res, next) => {
     const imageableId = req.params.spotId;
     const spot = await Spot.findByPk(req.params.spotId)
-    const {imageableType, url} = req.body
+    const imageableType = 'Spot'
+    const {url, preview} = req.body
     if(!spot){
         next({
             status: 404,
             message: "Spot couldn't be found"
         })
     }
-    const newImage = await spot.createImage({
+    const newImage = await Image.create({
         imageableId,
         imageableType,
-        url
+        url,
+        preview
     })
-    res.json(newImage)
+    res.json({
+      url: newImage.url,
+      preview: newImage.preview
+
+    })
 
 })
 
@@ -191,7 +279,17 @@ await spot.update({
     description,
     price
 })
-res.json(spot)
+res.json({
+  address: spot.address,
+  city: spot.city,
+  state: spot.state,
+  country: spot.country,
+  lat: spot.lat,
+  lng: spot.lng,
+  name: spot.name,
+  description: spot.description,
+  price: spot.price
+})
 })
 
 // DELETE spot by spotId
@@ -204,7 +302,7 @@ router.delete('/:spotId', async (req, res, next) => {
         })
     }
     await spot.destroy()
-    res.json(spot)
+    res.json({message: "Successfully deleted"})
 })
 
 // POST a review based on spotId
