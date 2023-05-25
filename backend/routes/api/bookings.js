@@ -16,22 +16,68 @@ const validateBooking = [
 
 // GET all of the current user's bookings
 router.get('/current', async (req, res, next) => {
-    const user = req.user
-    const bookings = await Booking.findAll({where: {userId: user.id}})
-    res.json(bookings)
+    const bookings = await Booking.findAll({
+        include: [Spot],
+      });
+
+      const formattedBookings = bookings.map((booking) => {
+        return {
+          id: booking.id,
+          spotId: booking.spotId,
+          Spot: {
+            id: booking.Spot.id,
+            ownerId: booking.Spot.ownerId,
+            address: booking.Spot.address,
+            city: booking.Spot.city,
+            state: booking.Spot.state,
+            country: booking.Spot.country,
+            lat: booking.Spot.lat,
+            lng: booking.Spot.lng,
+            name: booking.Spot.name,
+            price: booking.Spot.price,
+            previewImg: booking.Spot.previewImg,
+          },
+          userId: booking.userId,
+          startDate: booking.startDate,
+          endDate: booking.endDate,
+          createdAt: booking.createdAt,
+          updatedAt: booking.updatedAt,
+        };
+      });
+
+      res.json({ Bookings: formattedBookings });
 })
 
 // PATCH a booking by bookingId
 router.patch('/:bookingId', async (req, res, next) => {
     const {startDate, endDate} = req.body
+    const user = req.user
     const booking = await Booking.findByPk(req.params.bookingId)
+    if(user.id !== booking.userId){
+        next({
+            status: 403,
+            message: "This is not your booking!"
+        })
+        return
+    }
     if(!booking){
         next({
             status: 404,
             message: "Booking couldn't be found"
         })
     }
-    const bookings = await Booking.findAll({where: {spotId: booking.spotId}})
+    const bookings = await Booking.findAll({
+        where: {spotId: booking.spotId},
+        attributes: [
+            'id',
+            'spotId',
+            'userId',
+            'startDate',
+            'endDate',
+            'createdAt',
+            'updatedAt'
+        ]
+    })
     const today = new Date()
     const errors = {}
     if(Date(endDate) < today){
@@ -39,14 +85,17 @@ router.patch('/:bookingId', async (req, res, next) => {
             status: 403,
             message: "Past bookings can't be modified"
         })
+        return
     }
     if(Date(booking.endDate) < Date(booking.startDate)){
         errors.endDate = "endDate cannot come before startDate"
+        return
     }
 
         for(let i = 0; i < bookings.length; i++){
             let booked = bookings[i];
 
+        if(booked.userId !== user.id){
             if(booked.startDate <= startDate && startDate <= booked.endDate){
                 errors.startDate = "Start date conflicts with an existing booking"
             }
@@ -61,13 +110,14 @@ router.patch('/:bookingId', async (req, res, next) => {
                 }
             }
         }
+    }
 
     if(Object.keys(errors).length === 0){
     await booking.update({
         startDate,
         endDate
     })
-    res.json(bookings)
+    res.json(booking)
 } else {
 res.json({message: "Sorry this spot is already booked for the specified dates", errors: errors})
 }

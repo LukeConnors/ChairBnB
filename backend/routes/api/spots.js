@@ -50,15 +50,6 @@ const validateSpot = [
   ];
 
 
-  const validateBooking = [
-    check('endDate')
-      .exists({ checkFalsy: true })
-      .isDate()
-      .isAfter('startDate')
-      .withMessage('End date cannot be on or before startDate'),
-    handleValidationErrors
-  ];
-
   const validateReview = [
     check('review')
       .exists({ checkFalsy: true })
@@ -73,7 +64,6 @@ const validateSpot = [
 
 
 // GET all Spots
-// Fixed; but new issue where it only returns one spot.
 router.get('/', async (req, res, next) => {
 let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 const filters = {};
@@ -136,6 +126,30 @@ return res.json({
 })
 
 
+// GET all spots owned by the current user.
+router.get('/current', async (req, res, next) => {
+  const user = req.user
+  const spots = await Spot.findAll({
+    where: {ownerId: user.id},
+    attributes: [
+      'id',
+      'ownerId',
+      'address',
+      'city',
+      'state',
+      'lat',
+      'lng',
+      'name',
+      'description',
+      'price',
+      'createdAt',
+      'updatedAt',
+      [Sequelize.literal('(SELECT AVG(stars) FROM Reviews)'), 'avgStarRating']
+    ],
+  })
+  res.json({Spots: spots})
+})
+
 // GET spot details by ID
 // needs numReviews, and avgStarRating in spot data
 router.get('/:spotId', async (req, res, next) => {
@@ -143,7 +157,7 @@ router.get('/:spotId', async (req, res, next) => {
 const numReviews = Sequelize.fn('COUNT', Sequelize.col('Reviews.id'));
 const avgStarRating = Sequelize.fn('AVG', Sequelize.col('Reviews.stars'));
 
-let spotId = req.params.spotId
+let spotId = parseInt(req.params.spotId)
 
 const spot = await Spot.findOne({
     where: {id: spotId},
@@ -239,7 +253,7 @@ res.json({
 
 // Post an image for a spot, by spot ID
 router.post('/:spotId/images', async (req, res, next) => {
-    const imageableId = req.params.spotId;
+    const imageableId = parseInt(req.params.spotId);
     const spot = await Spot.findByPk(req.params.spotId)
     const imageableType = 'Spot'
     const {url, preview} = req.body
@@ -308,7 +322,7 @@ router.delete('/:spotId', async (req, res, next) => {
 // POST a review based on spotId
 router.post('/:spotId/reviews', validateReview, async (req, res, next) => {
   const {review, stars} = req.body;
-  const spotId = req.params.spotId;
+  const spotId = parseInt(req.params.spotId);
   const userId = req.user.id;
   const isThereASpot = await Spot.findByPk(spotId);
   const spotReview = await Review.findOne({where: {userId: userId, spotId: spotId}})
@@ -335,17 +349,42 @@ router.get('/:spotId/reviews', async (req, res, next) => {
   if(!isThereASpot){
       res.status(404).json({message: "Spot couldn't be found"})
   }
-  const reviews = await Review.findAll({where: {spotId: spot}});
-  res.json(reviews)
+  const reviews = await Review.findAll({
+    where: {spotId: spot},
+    include: [
+        {
+        model: Image, as: 'ReviewImages',
+        attributes: ['id', 'url']
+    }
+    ]
+
+  });
+  res.json({Reviews: reviews})
 });
 
 
 // POST a booking for a spot based on the spot's ID
 router.post('/:spotId/bookings', async (req, res, next) => {
   const {startDate, endDate} = req.body;
-  const spotId = req.params.spotId;
+  const spotId = parseInt(req.params.spotId);
+  const user = req.user
   const bookings = await Booking.findAll({where: {spotId: spotId}})
+  const spot = await Spot.findByPk(spotId)
+  if(!spot){
+    next({
+      status: 404,
+      message: "Spot couldn't be found"
+    })
+    return
+  }
   const errors = {}
+  if(spot.ownerId === user.id){
+    next({
+      status: 403,
+      message: "You cannot make a booking on property you own!"
+    })
+    return
+  }
   for(let i = 0; i < bookings.length; i++){
       let booked = bookings[i];
 
@@ -383,7 +422,6 @@ router.post('/:spotId/bookings', async (req, res, next) => {
 router.get('/:spotId/bookings', async (req, res, next) => {
   const spot = await Spot.findByPk(req.params.spotId)
   const user = req.user
-  const bookings = await Booking.findAll({where: {spotId: req.params.spotId}})
   if(!spot){
       next({
           status: 404,
@@ -391,11 +429,20 @@ router.get('/:spotId/bookings', async (req, res, next) => {
       })
   } else if (spot.ownerId === req.user.id){
       const userBookings = await Booking.findAll({
-          include: {model: User},
-          where: {spotId: req.params.spotId}
+        where: {spotId: req.params.spotId},
+          attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt'],
+          include: {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName'],
+          },
+
       })
       res.json({Bookings: userBookings})
   } else {
+    const bookings = await Booking.findAll({
+      where: { spotId: req.params.spotId },
+      attributes: ['spotId', 'startDate', 'endDate'],
+    });
   res.json({Bookings: bookings})
   }
 })

@@ -17,16 +17,46 @@ const validateReview = [
   ];
 
   // GET all of the reviews the logged in user has written.
-router.get('/reviews/current', async (req, res, next) => {
+router.get('/current', async (req, res, next) => {
   const user = req.user.id
-  const reviews = await Review.findAll({where: {userId: user}})
-  res.json(reviews)
+  const reviews = await Review.findAll({
+    where: {userId: user},
+    include: [
+    {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+    },
+    {
+        model: Spot,
+        attributes: [
+            'id',
+            'ownerId',
+            'address',
+            'city',
+            'state',
+            'country',
+            'lat',
+            'lng',
+            'name',
+            'price',
+            'previewImg'
+        ]
+    },
+    {
+        model: Image, as: 'ReviewImages',
+        attributes: ['id', 'url']
+    }
+]
+
+})
+  res.json({Reviews: reviews})
 })
 
 
 //   POST an image to a review based on reviewId
 router.post('/:reviewId/images', async (req, res, next) => {
-    const reviewId = req.params.reviewId
+    const reviewId = parseInt(req.params.reviewId)
+    const user = req.user.id;
     const review = await Review.findByPk(reviewId);
     if(!review){
         next({
@@ -41,7 +71,16 @@ router.post('/:reviewId/images', async (req, res, next) => {
         status: 403,
         message: "Maximum number of images for this resource was reached"
         })
+        return
     }
+    if(review.userId !== user){
+        next({
+            status: 403,
+            message: "This review belongs to another user and therefore you cannot edit it!"
+        })
+        return
+    }
+
     const imageableType = 'Review'
     const {url} = req.body;
     const newImage = await Image.create({
@@ -49,18 +88,28 @@ router.post('/:reviewId/images', async (req, res, next) => {
         imageableType,
         url
     })
-    res.json(newImage)
+    res.json({
+        id: newImage.id,
+        url: newImage.url
+    })
 })
 
 // Edit a review by reviewId
 router.put('/:reviewId', validateReview, async (req, res, next) => {
     const {review, stars} = req.body;
+    const user = req.user.id
     const thisReview = await Review.findByPk(req.params.reviewId)
     if(!thisReview){
         next({
             status: 404,
             message: "Review couldn't be found"
             })
+    }
+    if(thisReview.userId !== user){
+        next({
+            status: 403,
+            message: "This review belongs to another user and therefore you cannot edit it!"
+        })
     }
     await thisReview.update({
         review,
@@ -72,14 +121,23 @@ router.put('/:reviewId', validateReview, async (req, res, next) => {
 // Delete a Review
 router.delete('/:reviewId', async (req, res, next) => {
     const review = await Review.findByPk(req.params.reviewId);
+    const user = req.user.id
     if(!review){
         next({
             status: 404,
             message: "Review couldn't be found"
         })
     }
+    if(review.userId !== user){
+        next({
+            status: 403,
+            message: "This review belongs to another user and therefore you cannot delete it!"
+        })
+        return
+    }
+
     await review.destroy()
-    res.json(review)
+    res.json({message: "Successfully deleted"})
 })
 
 

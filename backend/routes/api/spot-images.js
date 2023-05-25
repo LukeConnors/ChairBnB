@@ -6,11 +6,18 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 router.delete('/:imageId', async (req, res, next) => {
     const image = await Image.findByPk(req.params.imageId)
-    if(image.imageableType !== 'Spot'){
+    if(!image){
         next({
             status: 404,
             message: "Spot image couldn't be found"
         })
+    }
+    if(image.imageableType !== 'Spot'){
+        next({
+            status: 400,
+            message: "The image you are trying to delete does not belong to the Spot!"
+        })
+        return
     }
     await image.destroy()
     res.json({message: "Successfully deleted"})

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Spot.hasMany(
         models.Image,
-        {foreignKey: 'imageableId',as: 'SpotImages', constraints: false, scope: {imageableType: 'Spot'}}
+        {foreignKey: 'imageableId', as: 'SpotImages', constraints: false, onDelete: 'CASCADE', scope: {imageableType: 'Spot'}}
       )
       Spot.hasMany(
         models.Booking,

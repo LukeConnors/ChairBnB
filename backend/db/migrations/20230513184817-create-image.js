@@ -21,7 +21,7 @@ module.exports = {
       },
       imageableType: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       url: {
         type: Sequelize.STRING,
@@ -29,7 +29,8 @@ module.exports = {
       },
       preview:{
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        defaultValue: true,
+        allowNull: true
       },
       createdAt: {
         allowNull: false,

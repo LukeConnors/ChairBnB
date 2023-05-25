@@ -13,11 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Image.belongsTo(
         models.Spot,
-        {foreignKey: 'imageableId', constraints: false},
+        {foreignKey: 'imageableId', onDelete: 'CASCADE', constraints: false, scope: {imageableType: 'Spot'}},
       )
       Image.belongsTo(
         models.Review,
-        {foreignKey: 'imageableId', constraints: false},
+        {foreignKey: 'imageableId', onDelete: 'CASCADE', constraints: false, scope: {imageableType: 'Review'}},
       )
     }
   }
@@ -45,7 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     preview: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: true,
+      defaultValue: true
     }
   }, {
     sequelize,
