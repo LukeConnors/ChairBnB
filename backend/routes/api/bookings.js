@@ -4,7 +4,7 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { where } = require('sequelize');
-const booking = require('../../db/models/booking');
+const { requireAuth } = require('../../utils/auth');
 
 const validateBooking = [
     check('endDate')
@@ -15,7 +15,7 @@ const validateBooking = [
   ];
 
 // GET all of the current user's bookings
-router.get('/current', async (req, res, next) => {
+router.get('/current', requireAuth, async (req, res, next) => {
     const bookings = await Booking.findAll({
         include: [Spot],
       });
@@ -48,15 +48,15 @@ router.get('/current', async (req, res, next) => {
       res.json({ Bookings: formattedBookings });
 })
 
-// PATCH a booking by bookingId
-router.patch('/:bookingId', async (req, res, next) => {
+// PATCH a booking by bookingId (Edit a booking)
+router.patch('/:bookingId', requireAuth, async (req, res, next) => {
     const {startDate, endDate} = req.body
     const user = req.user
     const booking = await Booking.findByPk(req.params.bookingId)
     if(user.id !== booking.userId){
         next({
             status: 403,
-            message: "This is not your booking!"
+            message: "Forbidden"
         })
         return
     }
@@ -124,8 +124,16 @@ res.json({message: "Sorry this spot is already booked for the specified dates", 
 })
 
 // DELETE a booking by bookingId
-router.delete('/:bookingId', async (req, res, next) => {
+router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     const booking = await Booking.findByPk(req.params.bookingId)
+    const user = req.user
+    if(booking.userId !== user.id){
+        next({
+            status: 403,
+            message: "Forbidden"
+        })
+        return
+    }
     const today = new Date()
     if(!booking){
         next({

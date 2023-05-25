@@ -3,6 +3,7 @@ const {Spot, User, Image, Review} = require('../../db/models')
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { requireAuth } = require('../../utils/auth');
 
 const validateReview = [
     check('review')
@@ -17,7 +18,7 @@ const validateReview = [
   ];
 
   // GET all of the reviews the logged in user has written.
-router.get('/current', async (req, res, next) => {
+router.get('/current', requireAuth, async (req, res, next) => {
   const user = req.user.id
   const reviews = await Review.findAll({
     where: {userId: user},
@@ -54,9 +55,9 @@ router.get('/current', async (req, res, next) => {
 
 
 //   POST an image to a review based on reviewId
-router.post('/:reviewId/images', async (req, res, next) => {
+router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     const reviewId = parseInt(req.params.reviewId)
-    const user = req.user.id;
+    const user = req.user;
     const review = await Review.findByPk(reviewId);
     if(!review){
         next({
@@ -73,10 +74,10 @@ router.post('/:reviewId/images', async (req, res, next) => {
         })
         return
     }
-    if(review.userId !== user){
+    if(review.userId !== user.id){
         next({
             status: 403,
-            message: "This review belongs to another user and therefore you cannot edit it!"
+            message: "Forbidden"
         })
         return
     }
@@ -95,9 +96,9 @@ router.post('/:reviewId/images', async (req, res, next) => {
 })
 
 // Edit a review by reviewId
-router.put('/:reviewId', validateReview, async (req, res, next) => {
+router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
     const {review, stars} = req.body;
-    const user = req.user.id
+    const user = req.user
     const thisReview = await Review.findByPk(req.params.reviewId)
     if(!thisReview){
         next({
@@ -105,10 +106,10 @@ router.put('/:reviewId', validateReview, async (req, res, next) => {
             message: "Review couldn't be found"
             })
     }
-    if(thisReview.userId !== user){
+    if(thisReview.userId !== user.id){
         next({
             status: 403,
-            message: "This review belongs to another user and therefore you cannot edit it!"
+            message: "Forbidden"
         })
     }
     await thisReview.update({
@@ -119,19 +120,19 @@ router.put('/:reviewId', validateReview, async (req, res, next) => {
 })
 
 // Delete a Review
-router.delete('/:reviewId', async (req, res, next) => {
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     const review = await Review.findByPk(req.params.reviewId);
-    const user = req.user.id
+    const user = req.user
     if(!review){
         next({
             status: 404,
             message: "Review couldn't be found"
         })
     }
-    if(review.userId !== user){
+    if(review.userId !== user.id){
         next({
             status: 403,
-            message: "This review belongs to another user and therefore you cannot delete it!"
+            message: "Forbidden"
         })
         return
     }
