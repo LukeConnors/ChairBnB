@@ -53,7 +53,7 @@ Returns the information about the current user that is logged in.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: '/users/profile'
+  * URL: '/users/current'
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -94,7 +94,7 @@ information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * URL: '/logIn'
+  * URL: '/session'
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1176,7 +1176,7 @@ Update and return an existing booking.
 * Require Authentication: true
 * Require proper authorization: Booking must belong to the current user
 * Request
-  * Method: PUT
+  * Method: PATCH
   * URL: '/bookings/:bookingId'
   * Headers:
     * Content-Type: application/json
