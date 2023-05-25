@@ -16,39 +16,12 @@ const validateReview = [
     handleValidationErrors
   ];
 
-// GET all reviews by a spot's Id
-  router.get('/:spotId', async (req, res, next) => {
-    const spot = req.params.spotId;
-    const isThereASpot = await Spot.findByPk(spot);
-    if(!isThereASpot){
-        res.status(404).json({message: "Spot couldn't be found"})
-    }
-    const reviews = await Review.findAll({where: {spotId: spot}});
-    res.json(reviews)
-  });
-
-// POST a review based on spotId
-  router.post('/:spotId', validateReview, async (req, res, next) => {
-    const {review, stars} = req.body;
-    const spotId = req.params.spotId;
-    const userId = req.user.id;
-    const isThereASpot = await Spot.findByPk(spotId);
-    const spotReview = await Review.findOne({where: {userId: userId, spotId: spotId}})
-    if(!isThereASpot){
-        res.status(404).json({message: "Spot couldn't be found"})
-    }
-    if(spotReview){
-        res.status(500).json({message: "User already has a review for this spot"})
-    }
-    const newReview = await Review.create({
-        spotId,
-        userId,
-        review,
-        stars
-    })
-res.json(newReview)
-  })
-
+  // GET all of the reviews the logged in user has written.
+router.get('/reviews/current', async (req, res, next) => {
+  const user = req.user.id
+  const reviews = await Review.findAll({where: {userId: user}})
+  res.json(reviews)
+})
 
 
 //   POST an image to a review based on reviewId
