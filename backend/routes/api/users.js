@@ -55,10 +55,10 @@ const validateSignup = [
 
 
 // Sign up
-router.post('/', validateSignup, async (req, res) => {
+router.post('/', validateSignup, async (req, res, next) => {
       const { firstName, lastName, email, password, username } = req.body;
-      const sameEmail = await User.findAll({where: {email: email}})
-      const sameUsername = await User.findAll({where: {username: username}})
+      const sameEmail = await User.findOne({where: {email: email}})
+      const sameUsername = await User.findOne({where: {username: username}})
       if(sameEmail){
         next({
           status: 500,
@@ -96,8 +96,7 @@ router.post('/', validateSignup, async (req, res) => {
       return res.json({
         user: safeUser
       });
-    }
-  );
+    });
 
 
 
