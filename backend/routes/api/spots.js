@@ -134,8 +134,8 @@ return res.json({
 
 // GET all spots owned by the current user.
 router.get('/current', requireAuth ,async (req, res, next) => {
-  const avgStarRating = Sequelize.fn('AVG', Sequelize.col('Reviews.stars'));
   const user = req.user
+  let avgStarRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars'), 'FLOAT'));
   const spots = await Spot.findAll({
     where: {ownerId: user.id},
     attributes: [
@@ -151,7 +151,6 @@ router.get('/current', requireAuth ,async (req, res, next) => {
       'price',
       'createdAt',
       'updatedAt',
-      // [Sequelize.literal('(SELECT AVG(stars) FROM Reviews)'), 'avgStarRating'],
       [avgStarRating, 'avgStarRating'],
       'previewImg'
     ],
@@ -163,8 +162,8 @@ router.get('/current', requireAuth ,async (req, res, next) => {
 // needs numReviews, and avgStarRating in spot data
 router.get('/:spotId', async (req, res, next) => {
 
-const numReviews = Sequelize.fn('COUNT', Sequelize.col('Reviews.id'));
-const avgStarRating = Sequelize.fn('AVG', Sequelize.col('Reviews.stars'));
+const numReviews = Sequelize.fn('COUNT', Sequelize.cast(Sequelize.col('Reviews.stars'), 'FLOAT'));
+const avgStarRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars'), 'FLOAT'));
 
 let spotId = parseInt(req.params.spotId)
 
