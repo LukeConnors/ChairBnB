@@ -96,12 +96,12 @@ const spots = await Spot.findAll({
   where: filters,
   limit: parseInt(size),
   offset: (parseInt(page) - 1) * parseInt(size),
-  // include: {
-  //   model: Review,
-  //   attributes: [],
-  //   duplicating: false,
-  //   required: false,
-  // },
+  include: {
+    model: Review,
+    attributes: [],
+    duplicating: false,
+    required: false,
+  },
   attributes: [
     'id',
     'ownerId',
