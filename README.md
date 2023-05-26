@@ -160,7 +160,7 @@ user's information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * URL: '/signUp'
+  * URL: '/users'
   * Headers:
     * Content-Type: application/json
   * Body:
