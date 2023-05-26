@@ -78,13 +78,15 @@ const bookings = await Booking.findAll({
   where: { spotId: booking.spotId },
 });
 
+const bookingEndDate = new Date(booking.endDate);
 const today = new Date();
-if (endDate < today) {
+if (bookingEndDate < today) {
   return next({
     status: 403,
     message: "Past bookings can't be modified",
   });
 }
+
 
 if (endDate < booking.startDate) {
   errors.endDate = "endDate cannot come before startDate";
