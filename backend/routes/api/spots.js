@@ -178,7 +178,7 @@ const spot = await Spot.findOne({
   where: {id: spotId},
   include: [
     {
-        group: 'SpotImages.id',
+
         model: Image, as: 'SpotImages',
         attributes: [
           'id',
@@ -218,7 +218,7 @@ const spot = await Spot.findOne({
       [numReviews, 'numReviews'],
       [avgStarRating, 'avgStarRating'],
     ],
-    group: ['Spot.id', 'Owner.id'],
+    group: ['Spot.id', 'Owner.id', 'SpotImages.id'],
 })
 if(!spot){
 res.status(404).json({message: "Spot couldn't be found"})
