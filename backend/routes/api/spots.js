@@ -115,7 +115,7 @@ const spots = await Spot.findAll({
     'price',
     'createdAt',
     'updatedAt',
-    // [Sequelize.literal('(SELECT AVG(stars) FROM "Reviews")'), 'avgStarRating'],
+    [Sequelize.literal(`(SELECT AVG(stars) FROM ${process.env.SCHEMA}.Reviews )`), 'avgStarRating'],
     'previewImg'
   ],
 })
