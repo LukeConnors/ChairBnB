@@ -168,6 +168,7 @@ const avgStarRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.
 let spotId = parseInt(req.params.spotId)
 
 const spot = await Spot.findOne({
+  group: 'SpotImages.id',
     where: {id: spotId},
     include: [
       {
