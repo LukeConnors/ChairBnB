@@ -145,7 +145,8 @@ router.get('/current', requireAuth ,async (req, res, next) => {
       'price',
       'createdAt',
       'updatedAt',
-      [Sequelize.literal('(SELECT AVG(stars) FROM Reviews)'), 'avgStarRating']
+      [Sequelize.literal('(SELECT AVG(stars) FROM Reviews)'), 'avgStarRating'],
+      'previewImg'
     ],
   })
   res.json({Spots: spots})
@@ -232,7 +233,9 @@ const newSpot = await Spot.create({
 })
 
 
-res.json({
+res.status(201).json({
+  id: newSpot.id,
+  ownerId: newSpot.ownerId,
   address: newSpot.address,
   city: newSpot.city,
   state: newSpot.state,
@@ -241,7 +244,9 @@ res.json({
   lng: newSpot.lng,
   name: newSpot.name,
   description: newSpot.description,
-  price: newSpot.price
+  price: newSpot.price,
+  createdAt: newSpot.createdAt,
+  updatedAt: newSpot.updatedAt,
 })
     } catch(err){
         next({
@@ -278,7 +283,13 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         url,
         preview
     })
+    if(newImage.preview === true){
+      spot.update({
+        previewImg: newImage.url
+      })
+    }
     res.json({
+      id: newImage.id,
       url: newImage.url,
       preview: newImage.preview
 
@@ -311,6 +322,8 @@ await spot.update({
     price
 })
 res.json({
+  id: spot.id,
+  ownerId: spot.ownerId,
   address: spot.address,
   city: spot.city,
   state: spot.state,
@@ -319,7 +332,9 @@ res.json({
   lng: spot.lng,
   name: spot.name,
   description: spot.description,
-  price: spot.price
+  price: spot.price,
+  createdAt: spot.createdAt,
+  updatedAt: spot.updatedAt
 })
 })
 
@@ -327,18 +342,19 @@ res.json({
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId)
     const user = req.user
+    if(!spot){
+      next({
+        status: 404,
+        message: "Spot couldn't be found"
+      })
+      return
+    }
     if(spot.ownerId !== user.id){
       next({
         status: 403,
         message: "Forbidden"
       })
       return
-    }
-    if(!spot){
-        next({
-            status: 404,
-            message: "Spot couldn't be found"
-        })
     }
     await spot.destroy()
     res.json({message: "Successfully deleted"})
@@ -369,7 +385,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
       review,
       stars
   })
-res.json(newReview)
+res.status(201).json(newReview)
 })
 
 
@@ -383,7 +399,11 @@ router.get('/:spotId/reviews', async (req, res, next) => {
   const reviews = await Review.findAll({
     where: {spotId: spot},
     include: [
-        {
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+    },
+      {
         model: Image, as: 'ReviewImages',
         attributes: ['id', 'url']
     }
@@ -468,7 +488,22 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
           },
 
       })
-      res.json({Bookings: userBookings})
+      const formattedUserBookings = userBookings.map((booking) => ({
+        User: {
+          id: booking.User.id,
+          firstName: booking.User.firstName,
+          lastName: booking.User.lastName,
+        },
+        id: booking.id,
+        spotId: booking.spotId,
+        userId: booking.userId,
+        startDate: booking.startDate,
+        endDate: booking.endDate,
+        createdAt: booking.createdAt,
+        updatedAt: booking.updatedAt,
+      }));
+
+      res.json({Bookings: formattedUserBookings})
   } else {
     const bookings = await Booking.findAll({
       where: { spotId: req.params.spotId },
