@@ -27,7 +27,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     if(image.imageableType !== 'Spot'){
         next({
             status: 400,
-            message: "The image you are trying to delete does not belong to the Spot!"
+            message: "The image you are trying to delete does not belong to a Spot!"
         })
         return
     }
