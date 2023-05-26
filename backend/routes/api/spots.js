@@ -137,6 +137,7 @@ router.get('/current', requireAuth ,async (req, res, next) => {
   const user = req.user
   let avgStarRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars'), 'FLOAT'));
   const spots = await Spot.findAll({
+    group: 'Spot.id',
     where: {ownerId: user.id},
     include: {
       model: Review,
