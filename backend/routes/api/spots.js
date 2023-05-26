@@ -94,7 +94,7 @@ if (maxPrice) {
 }
 
 
-const avgStarRating = Sequelize.fn('AVG', Sequelize.col('Reviews.stars'));
+let avgStarRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars'), 'DECIMAL'));
 
 const spots = await Spot.findAll({
   group: 'Spot.id',
@@ -120,7 +120,6 @@ const spots = await Spot.findAll({
     'price',
     'createdAt',
     'updatedAt',
-    // [Sequelize.literal(`(SELECT AVG(stars) FROM ${process.env.SCHEMA}.Reviews )`), 'avgStarRating'],
     [avgStarRating, 'avgStarRating'],
     'previewImg'
   ],
