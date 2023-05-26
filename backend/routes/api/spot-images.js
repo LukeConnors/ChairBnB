@@ -8,6 +8,13 @@ const { requireAuth } = require('../../utils/auth');
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const image = await Image.findByPk(req.params.imageId)
     const user = req.user
+    if(!image){
+        next({
+            status: 404,
+            message: "Spot image couldn't be found"
+        })
+        return
+    }
     if(image.imageableType === 'Spot'){
         const spot = await Spot.findByPk(image.imageableId)
         if(spot.ownerId !== user.id){
@@ -17,12 +24,6 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
             })
             return
         }
-    }
-    if(!image){
-        next({
-            status: 404,
-            message: "Spot image couldn't be found"
-        })
     }
     if(image.imageableType !== 'Spot'){
         next({
