@@ -95,10 +95,10 @@ if (maxPrice) {
 
 
 // let avgStarRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars'), 'INTEGER'));
-let avgStarRating = Sequelize.literal('(SELECT AVG("Reviews"."stars") FROM "Reviews")');
+let avgStarRating = Sequelize.literal('(SELECT AVG(CAST("Reviews"."stars" AS FLOAT)) FROM "Reviews" WHERE "Reviews"."spotId" = "Spot"."id")');
 
 const spots = await Spot.findAll({
-  group: 'Spot.id',
+  group: ['Spot.id'],
   where: filters,
   limit: parseInt(size),
   offset: (parseInt(page) - 1) * parseInt(size),
