@@ -316,6 +316,13 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
 const {address, city, state, country, lat, lng, name, description, price} = req.body;
 const spot = await Spot.findByPk(req.params.spotId);
+if(!spot){
+  next({
+      status: 404,
+      message: "Spot couldn't be found"
+  })
+  return
+}
 const user = req.user
 if(spot.ownerId !== user.id){
   next({
