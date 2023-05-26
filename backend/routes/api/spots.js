@@ -444,6 +444,12 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
   const user = req.user
   const bookings = await Booking.findAll({where: {spotId: spotId}})
   const spot = await Spot.findByPk(spotId)
+  const errors = {}
+  if(endDate <= startDate){
+    errors.endDate = "endDate cannot be on or before startDate"
+    res.status(400).json({message: "Bad Request", errors: errors})
+    return
+  }
   if(!spot){
     next({
       status: 404,
@@ -451,7 +457,6 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     })
     return
   }
-  const errors = {}
   if(spot.ownerId === user.id){
     next({
       status: 403,
