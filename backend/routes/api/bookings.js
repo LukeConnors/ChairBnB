@@ -46,13 +46,19 @@ router.get('/current', requireAuth, async (req, res, next) => {
       });
 
       res.json({ Bookings: formattedBookings });
-})
+    })
 
-// PATCH a booking by bookingId (Edit a booking)
-router.patch('/:bookingId', requireAuth, async (req, res, next) => {
-    const {startDate, endDate} = req.body
-    const user = req.user
-    const booking = await Booking.findByPk(req.params.bookingId)
+    // PATCH a booking by bookingId (Edit a booking)
+    router.patch('/:bookingId', requireAuth, async (req, res, next) => {
+        const {startDate, endDate} = req.body
+        const user = req.user
+        const booking = await Booking.findByPk(req.params.bookingId);
+        const errors = {}
+    if(endDate <= startDate){
+        errors.endDate = "endDate cannot be on or before startDate"
+        res.status(400).json({message: "Bad Request", errors: errors})
+        return
+      }
     if(user.id !== booking.userId){
         next({
             status: 403,
@@ -79,7 +85,6 @@ router.patch('/:bookingId', requireAuth, async (req, res, next) => {
         ]
     })
     const today = new Date()
-    const errors = {}
     if(Date(endDate) < today){
         next({
             status: 403,
