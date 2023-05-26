@@ -6,6 +6,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
+const spot = require('../../db/models/spot');
 
 
 const validateSpot = [
@@ -96,6 +97,7 @@ if (maxPrice) {
 const avgStarRating = Sequelize.fn('AVG', Sequelize.col('Reviews.stars'));
 
 const spots = await Spot.findAll({
+  group: 'Spot.id',
   where: filters,
   limit: parseInt(size),
   offset: (parseInt(page) - 1) * parseInt(size),
