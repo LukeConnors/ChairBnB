@@ -74,16 +74,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
         return
     }
     const bookings = await Booking.findAll({
-        where: {spotId: booking.spotId},
-        attributes: [
-            'id',
-            'spotId',
-            'userId',
-            'startDate',
-            'endDate',
-            'createdAt',
-            'updatedAt'
-        ]
+        where: {spotId: booking.spotId}
     })
     const today = new Date()
     if(Date(endDate) < today){
