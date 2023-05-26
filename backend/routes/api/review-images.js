@@ -8,23 +8,19 @@ const { requireAuth } = require('../../utils/auth');
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const image = await Image.findByPk(req.params.imageId);
     const user = req.user;
-    if(image.imageableType === 'Review'){
-        const review = await Review.findByPk(image.imageableId)
-        if(review.userId !== user.id){
-            next({
-                status: 403,
-                message: "Forbidden"
-            })
-            return
-        }
-        await image.destroy()
-        res.json({message: "Successfully deleted"})
-    }
+    const review = await Review.findByPk(image.imageableId)
     if(!image){
         next({
             status: 404,
             message: "Review image couldn't be found"
         })
+    }
+    if(review.userId !== user.id){
+        next({
+            status: 403,
+            message: "Forbidden"
+        })
+        return
     }
     if(image.imageableType !== 'Review'){
         next({
@@ -32,6 +28,9 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
             message: "The image you are trying to delete does not belong to a Review!"
         })
         return
+    } else if(image.imageableType === 'Review'){
+        await image.destroy()
+        res.json({message: "Successfully deleted"})
     }
 })
 
