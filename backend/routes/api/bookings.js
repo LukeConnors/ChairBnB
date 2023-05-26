@@ -146,6 +146,13 @@ if (Object.keys(errors).length === 0) {
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     const booking = await Booking.findByPk(req.params.bookingId)
     const user = req.user
+    if(!booking){
+        next({
+            status: 404,
+            message: "Booking couldn't be found"
+        })
+        return
+    }
     if(booking.userId !== user.id){
         next({
             status: 403,
@@ -154,12 +161,6 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
         return
     }
     const today = new Date()
-    if(!booking){
-        next({
-            status: 404,
-            message: "Booking couldn't be found"
-        })
-    }
     if(Date(booking.startDate) < today && Date(booking.endDate) > today){
         next({
             status: 403,
