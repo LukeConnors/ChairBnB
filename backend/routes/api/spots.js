@@ -390,12 +390,13 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
   const spot = await Spot.findByPk(spotId);
   const spotReview = await Review.findOne({where: {userId: userId, spotId: spotId}})
 
+  if(!spot){
+      res.status(404).json({message: "Spot couldn't be found"})
+      return
+  }
   if(spot.ownerId === req.user.id){
     res.status(403).json({message: "Forbidden"})
     return
-  }
-  if(!spot){
-      res.status(404).json({message: "Spot couldn't be found"})
   }
   if(spotReview){
       res.status(500).json({message: "User already has a review for this spot"});
