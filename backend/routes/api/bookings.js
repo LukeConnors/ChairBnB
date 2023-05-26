@@ -160,14 +160,17 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
       });
       return;
     }
+    const bookingStartDate = new Date(booking.startDate);
+    const bookingEndDate = new Date(booking.endDate);
     const today = new Date();
-    if (booking.startDate.getTime() < today.getTime() && booking.endDate.getTime() > today.getTime()) {
-        next({
-          status: 403,
-          message: "Bookings that have been started can't be deleted"
-        });
-        return;
-      }
+
+    if (bookingStartDate < today && bookingEndDate > today) {
+      next({
+        status: 403,
+        message: "Bookings that have been started can't be deleted"
+      });
+      return;
+    }
     await booking.destroy();
     res.json({ message: "Successfully deleted" });
   });
