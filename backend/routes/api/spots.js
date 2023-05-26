@@ -138,6 +138,12 @@ router.get('/current', requireAuth ,async (req, res, next) => {
   let avgStarRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars'), 'FLOAT'));
   const spots = await Spot.findAll({
     where: {ownerId: user.id},
+    include: {
+      model: Review,
+      attributes: [],
+      duplicating: false,
+      required: false,
+    },
     attributes: [
       'id',
       'ownerId',
@@ -168,10 +174,10 @@ const avgStarRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.
 let spotId = parseInt(req.params.spotId)
 
 const spot = await Spot.findOne({
-  group: 'SpotImages.id',
-    where: {id: spotId},
-    include: [
-      {
+  where: {id: spotId},
+  include: [
+    {
+        group: 'SpotImages.id',
         model: Image, as: 'SpotImages',
         attributes: [
           'id',
