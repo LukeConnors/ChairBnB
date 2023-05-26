@@ -58,19 +58,20 @@ router.get('/current', requireAuth, async (req, res, next) => {
         errors.endDate = "endDate cannot be on or before startDate"
         res.status(400).json({message: "Bad Request", errors: errors})
         return
-      }
-    if(user.id !== booking.userId){
-        next({
-            status: 403,
-            message: "Forbidden"
-        })
-        return
     }
     if(!booking){
         next({
             status: 404,
             message: "Booking couldn't be found"
         })
+        return
+    }
+    if(user.id !== booking.userId){
+        next({
+            status: 403,
+            message: "Forbidden"
+        })
+        return
     }
     const bookings = await Booking.findAll({
         where: {spotId: booking.spotId},
