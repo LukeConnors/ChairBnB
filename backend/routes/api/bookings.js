@@ -49,7 +49,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     })
 
     // PATCH a booking by bookingId (Edit a booking)
-    router.patch('/:bookingId', requireAuth, async (req, res, next) => {
+    router.put('/:bookingId', requireAuth, async (req, res, next) => {
         const {startDate, endDate} = req.body
         const user = req.user
         const booking = await Booking.findByPk(req.params.bookingId);
