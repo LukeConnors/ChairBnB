@@ -92,6 +92,9 @@ if (maxPrice) {
   filters.price = { ...filters.price, [Op.lte]: parseInt(maxPrice) };
 }
 
+
+const avgStarRating = Sequelize.fn('AVG', Sequelize.col('Reviews.stars'));
+
 const spots = await Spot.findAll({
   where: filters,
   limit: parseInt(size),
@@ -115,7 +118,8 @@ const spots = await Spot.findAll({
     'price',
     'createdAt',
     'updatedAt',
-    [Sequelize.literal(`(SELECT AVG(stars) FROM ${process.env.SCHEMA}.Reviews )`), 'avgStarRating'],
+    // [Sequelize.literal(`(SELECT AVG(stars) FROM ${process.env.SCHEMA}.Reviews )`), 'avgStarRating'],
+    [avgStarRating, 'avgStarRating'],
     'previewImg'
   ],
 })
@@ -129,6 +133,7 @@ return res.json({
 
 // GET all spots owned by the current user.
 router.get('/current', requireAuth ,async (req, res, next) => {
+  const avgStarRating = Sequelize.fn('AVG', Sequelize.col('Reviews.stars'));
   const user = req.user
   const spots = await Spot.findAll({
     where: {ownerId: user.id},
@@ -145,7 +150,8 @@ router.get('/current', requireAuth ,async (req, res, next) => {
       'price',
       'createdAt',
       'updatedAt',
-      [Sequelize.literal('(SELECT AVG(stars) FROM Reviews)'), 'avgStarRating'],
+      // [Sequelize.literal('(SELECT AVG(stars) FROM Reviews)'), 'avgStarRating'],
+      [avgStarRating, 'avgStarRating'],
       'previewImg'
     ],
   })
