@@ -276,6 +276,13 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const imageableId = parseInt(req.params.spotId);
     const spot = await Spot.findByPk(req.params.spotId)
     const user = req.user
+    if(!spot){
+        next({
+            status: 404,
+            message: "Spot couldn't be found"
+        })
+        return
+    }
     if(spot.ownerId !== user.id){
       next({
         status: 403,
@@ -285,12 +292,6 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     }
     const imageableType = 'Spot'
     const {url, preview} = req.body
-    if(!spot){
-        next({
-            status: 404,
-            message: "Spot couldn't be found"
-        })
-    }
     const newImage = await Image.create({
         imageableId,
         imageableType,
