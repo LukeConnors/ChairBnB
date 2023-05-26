@@ -157,23 +157,28 @@ if (endDate < today) {
 
 if (endDate < booking.startDate) {
   errors.endDate = "endDate cannot come before startDate";
-  return res.status(400).json({ message: "Bad Request", errors: errors });
 }
 
 for (let i = 0; i < bookings.length; i++) {
   let booked = bookings[i];
 
-  if (booked.userId !== user.id) {
-    if (startDate <= booked.endDate && endDate >= booked.startDate) {
-      errors.conflict =
-        "There is already an existing booking within your selected date range, please select a new start or end date.";
-      break;
-    }
+  if (booked.id !== booking.id) {
     if (startDate >= booked.startDate && startDate <= booked.endDate) {
       errors.startDate = "Start date conflicts with an existing booking";
     }
+
     if (endDate >= booked.startDate && endDate <= booked.endDate) {
       errors.endDate = "End date conflicts with an existing booking";
+    }
+
+    if (
+      startDate <= booked.startDate &&
+      endDate >= booked.endDate &&
+      !errors.startDate &&
+      !errors.endDate
+    ) {
+      errors.conflict =
+        "There is already an existing booking within your selected date range, please select a new start or end date.";
     }
   }
 }
@@ -185,10 +190,24 @@ if (Object.keys(errors).length === 0) {
   });
   res.json(booking);
 } else {
-  res.status(403).json({
+  const errorResponse = {
     message: "Sorry, this spot is already booked for the specified dates",
-    errors: errors,
-  });
+    errors: {},
+  };
+
+  if (errors.startDate) {
+    errorResponse.errors.startDate = errors.startDate;
+  }
+
+  if (errors.endDate) {
+    errorResponse.errors.endDate = errors.endDate;
+  }
+
+  if (errors.conflict) {
+    errorResponse.errors.conflict = errors.conflict;
+  }
+
+  res.json(errorResponse);
 }
 });
 
