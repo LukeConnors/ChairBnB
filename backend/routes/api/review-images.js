@@ -10,7 +10,7 @@ const image = await Image.findByPk(req.params.imageId)
 if(!image){
     next({
         status: 404,
-        message: "Spot image couldn't be found"
+        message: "Review image couldn't be found"
     })
     return
 }
