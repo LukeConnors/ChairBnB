@@ -208,6 +208,7 @@ const spot = await Spot.findOne({
       'address',
       'city',
       'state',
+      'country',
       'lat',
       'lng',
       'name',
