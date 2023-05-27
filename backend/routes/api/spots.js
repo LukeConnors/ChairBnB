@@ -125,10 +125,12 @@ const spots = await Spot.findAll({
     'previewImg'
   ],
 })
+const intPage = parseInt(page)
+const intSize = parseInt (size)
 return res.json({
   Spots: spots,
-  page: page,
-  size: size
+  page: intPage,
+  size: intSize
   })
 })
 
