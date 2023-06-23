@@ -28,6 +28,7 @@ router.post(
     validateLogin,
     async (req, res, next) => {
       const { credential, password } = req.body;
+      console.log(credential, password)
 
       const user = await User.unscoped().findOne({
         where: {
