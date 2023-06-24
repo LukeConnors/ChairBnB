@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -10,18 +11,21 @@ const sessionUser = useSelector((state) => state.session.user)
 const [credential, setCredential] = useState("");
 const [password, setPassword] = useState("");
 const [errors, setErrors] = useState({});
+const history = useHistory()
 
 if (sessionUser) return <Redirect to="/" />;
 
 const handleSubmit = (e) => {
+  const user = {credential, password}
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.logInUser({ credential, password })).catch(
+   dispatch(sessionActions.logInUser(user)).catch(
       async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
       }
-    );
+      );
+      history.push('/')
   };
 
   return (
