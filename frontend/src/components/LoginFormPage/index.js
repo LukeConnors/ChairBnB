@@ -19,7 +19,7 @@ const handleSubmit = (e) => {
   const user = {credential, password}
     e.preventDefault();
     setErrors({});
-   dispatch(sessionActions.logInUser(user)).catch(
+   dispatch(sessionActions.logIn(user)).catch(
       async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);

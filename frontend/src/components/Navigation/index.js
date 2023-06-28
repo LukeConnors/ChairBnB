@@ -7,37 +7,49 @@ import './Navigation.css';
 
 function Navigation({ isLoaded }){
     const sessionUser = useSelector(state => state.session.user);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const logOutUser = (e) => {
-      e.preventDefault();
-      dispatch(sessionActions.logOutUser());
-    };
+    // const removeUser = (e) => {
+    //   e.preventDefault();
+    //   dispatch(sessionActions.removeUser());
+    // };
 
     let sessionLinks;
     if (sessionUser) {
       sessionLinks = (
+      <div className='user'>
         <li>
           <ProfileButton user={sessionUser} />
-          <button onClick={logOutUser}>Log Out</button>
         </li>
+      </div>
       );
     } else {
       sessionLinks = (
-        <li>
+      <div className='no-user'>
+        <li className='login'>
           <NavLink to="/login">Log In</NavLink>
+        </li>
+        <li className='signup'>
           <NavLink to="/signup">Sign Up</NavLink>
         </li>
+      </div>
       );
     }
 
     return (
+  <div className='nav-container'>
+      <div className='logo'>
+      <a>logo</a>
+      </div>
+    <div className='home'>
       <ul>
         <li>
           <NavLink exact to="/">Home</NavLink>
         </li>
         {isLoaded && sessionLinks}
       </ul>
+    </div>
+  </div>
     );
   }
 

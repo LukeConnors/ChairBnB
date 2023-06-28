@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import "./Navigation.css";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -12,15 +13,16 @@ function ProfileButton({ user }) {
     setShowMenu(true)
   }
 
-  const logOutUser = (e) => {
+  const removeUser = (e) => { 
     e.preventDefault();
-    dispatch(sessionActions.logOutUser());
+    dispatch(sessionActions.logOut());
   };
 
   useEffect(() => {
+    if(!showMenu) return;
     const closeMenu = (e) => {
         if(!ulRef.current.contains(e.target)){
-            setShowMenu(!showMenu);
+            setShowMenu(false);
         }
     };
 
@@ -33,7 +35,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu}>
+      <button id="profile" onClick={openMenu}>
       <i className="fa-solid fa-user"></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
@@ -41,7 +43,7 @@ function ProfileButton({ user }) {
         <li>{user?.firstName} {user?.lastName}</li>
         <li>{user?.email}</li>
         <li>
-          <button onClick={logOutUser}>Log Out</button>
+          <button onClick={removeUser}>Log Out</button>
         </li>
       </ul>
     </>

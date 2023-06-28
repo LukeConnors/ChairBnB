@@ -5,3 +5,41 @@
 .hidden{
     visibility: hidden;
 }
+.nav-container {
+    display: flex;
+    justify-content: space-between; /* Add space between logo and navigation links */
+  }
+
+.user{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.home {
+    display: flex;
+    justify-content: flex-end;
+}
+
+ul {
+    list-style-type: none;
+}
+
+a:hover{
+    font-size: 25px;
+}
+
+button:hover {
+    font-size: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+.logo {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-start;
+}

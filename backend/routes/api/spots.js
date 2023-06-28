@@ -6,7 +6,6 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
-const spot = require('../../db/models/spot');
 
 
 const validateSpot = [

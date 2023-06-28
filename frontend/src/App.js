@@ -5,6 +5,8 @@ import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
 import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation";
+import SpotsBrowser from "./components/Spots/SpotsBrowser";
+import SpotDetails from "./components/Spots/SpotDetails";
 
 
 function App() {
@@ -20,11 +22,17 @@ function App() {
     <Navigation isLoaded={isLoaded} />
 {
    isLoaded && <Switch>
+    <Route exact path="/spots/:spotId">
+      <SpotDetails />
+    </Route>
       <Route exact path="/login">
         <LoginFormPage />
       </Route>
       <Route exact path="/signup">
         <SignupFormPage />
+      </Route>
+      <Route exact path="/">
+    <SpotsBrowser />
       </Route>
     </Switch>
 }
