@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import "./Navigation.css";
+import {NavLink} from 'react-router-dom'
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function ProfileButton({ user }) {
     setShowMenu(true)
   }
 
-  const removeUser = (e) => { 
+  const removeUser = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logOut());
   };
@@ -42,6 +43,7 @@ function ProfileButton({ user }) {
         <li>{user?.username}</li>
         <li>{user?.firstName} {user?.lastName}</li>
         <li>{user?.email}</li>
+        <NavLink to='/spots/current'>Manage Spots</NavLink>
         <li>
           <button onClick={removeUser}>Log Out</button>
         </li>

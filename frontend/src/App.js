@@ -7,6 +7,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation";
 import SpotsBrowser from "./components/Spots/SpotsBrowser";
 import SpotDetails from "./components/Spots/SpotDetails";
+import UserSpots from "./components/Spots/UserSpots"
 
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
     <Navigation isLoaded={isLoaded} />
 {
    isLoaded && <Switch>
+    <Route exact path="/spots/current">
+      <UserSpots />
+    </Route>
     <Route exact path="/spots/:spotId">
       <SpotDetails />
     </Route>

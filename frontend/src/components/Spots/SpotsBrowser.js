@@ -23,7 +23,6 @@ function SpotsBrowser() {
       {spotIds.map(spotId => {
           const spot = spots[spotId];
           const redirectToSpot = async (e) => {
-            await dispatch(spotActions.fetchSpotDetails(spot.id))
             history.push(`/spots/${spot.id}`)
           }
           if(!user){
