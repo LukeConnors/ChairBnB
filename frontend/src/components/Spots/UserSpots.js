@@ -19,6 +19,7 @@ function UserSpots(){
     }, [dispatch])
     return(
         <div>
+            <h1>Your Spots:</h1>
         {spotIds.map(spotId => {
             const spot = userSpots[spotId];
             const redirectToSpot = async (e) => {
@@ -26,16 +27,15 @@ function UserSpots(){
               }
               return (
                 <div className='tile-container' key={spot?.id}>
-                    <h1>Your Spots:</h1>
                 <div className='image-container'>
-                <img className="spot-img" onClick={redirectToSpot} src={spot?.previewImg} alt={`Thumbnail for ${spot.name}`} />
+                <img className="spot-img" onClick={redirectToSpot} src={spot?.previewImg} alt={`No image set for ${spot.name}`} />
                 </div>
                 <h2>{spot?.name}</h2>
                 <div>
                 <h3>${`${spot?.price} per night`}</h3>
                 <h3>{spot?.city}, {spot?.state}</h3>
                 </div>
-                  <h3>{spot?.avgStarRating} stars</h3>
+                  <h3>{spot?.avgStarRating ? spot?.avgStarRating : 'No'} stars</h3>
               </div>
             );
 

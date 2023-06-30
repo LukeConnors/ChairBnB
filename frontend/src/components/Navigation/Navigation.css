@@ -7,8 +7,12 @@
 }
 .nav-container {
     display: flex;
-    justify-content: space-between; /* Add space between logo and navigation links */
-  }
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(168, 167, 167, 0.5);
+    margin-bottom: 125px;
+    height: 150px;
+}
 
 .user{
     display: flex;
@@ -24,22 +28,50 @@ ul {
     list-style-type: none;
 }
 
-a:hover{
-    font-size: 25px;
-}
-
-button:hover {
-    font-size: 20px;
-}
-
 a {
     text-decoration: none;
     color: black;
     font-size: 20px;
 }
 
+
+button{
+    cursor: pointer;
+}
+
 .logo {
     margin-top: 15px;
     display: flex;
     justify-content: flex-start;
+    width: 150px;
+    height: 100px;
+    margin: 20px;
+    padding-bottom: 20px;
+    cursor: pointer;
+}
+
+.nav-link{
+    margin-top: 25px;
+    margin-right: 50px;
+}
+.home {
+    margin-top: 200px;
+}
+
+.profile-button{
+    margin-bottom: 75px;
+
+}
+
+
+.nav-link,
+.home-button
+.profile-button {
+  transition: transform 0.2s ease-in-out;
+}
+
+.nav-link:hover,
+.home-button:hover,
+.profile-button:hover {
+  transform: scale(1.03);
 }

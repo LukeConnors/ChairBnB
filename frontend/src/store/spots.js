@@ -4,7 +4,7 @@ import { csrfFetch } from "./csrf"
 export const SET_SPOT_DETAILS = "spots/SET_SPOT_DETAILS"
 export const SET_USER_SPOTS = "spots/SET_USER_SPOTS"
 export const SET_SPOTS = "spots/SET_SPOTS"
-export const NEW_SPOT = "spots/NEW_SPOT"
+export const ADD_SPOT = "spots/ADD_SPOT"
 export const UPDATE_SPOT = "spots/UPDATE_SPOT"
 export const DELETE_SPOT = "spots/DELETE_SPOT"
 
@@ -14,32 +14,49 @@ export const allSpotsSelector = (state) => {
     delete allSpots.detailedSpot;
     return allSpots;
 };
-export const spotDetailsSelector = () => state => state.spots.detailedSpot;
+export const spotDetailsSelector = () => (state) => state.spots.detailedSpot || {};
 export const userSpotsSelector = (state) => {
    return state.spots.userSpots
 }
 export const updateSpotSelector = () => {}
 
 // action creators
+
 // set all spots
 const setSpots = (spots) => ({
     type: SET_SPOTS,
     spots
 })
 
+// set logged in users spots
 const setUserSpots = (spots) => ({
     type: SET_USER_SPOTS,
     spots
 })
 
+// update a spot owned by the user
 const updateSpot = (spot) => ({
 type: UPDATE_SPOT,
 payload: spot
 })
 
+// set an individual spot
 const setSpotDetails = (spot) => ({
     type: SET_SPOT_DETAILS,
+    spot
+
+})
+
+// add a new spot
+const addSpot = (spot) => ({
+    type: ADD_SPOT,
     payload: spot
+})
+
+// delete a spot
+const deleteSpot = (spotId) => ({
+    type: DELETE_SPOT,
+    payload: spotId
 
 })
 
@@ -47,10 +64,10 @@ const setSpotDetails = (spot) => ({
 // thunks
 // fetch all spots
 export const fetchSpots = () => async (dispatch) => {
-const res = await csrfFetch('/api/spots')
-const data = await res.json();
-dispatch(setSpots(data.Spots))
-return data
+    const res = await csrfFetch('/api/spots')
+    const data = await res.json();
+    dispatch(setSpots(data.Spots))
+    return data
 }
 
 // fetch spots by the logged in user
@@ -60,18 +77,6 @@ export const fetchUserSpots = () => async (dispatch, getState) => {
     const data = await res.json();
     dispatch(setUserSpots(data.Spots))
     return data;
-}
-
-// update a spot owner by the user
-export const editSpot = (spotId, payload) => async (dispatch) => {
-const res = await csrfFetch(`/api/spots/${spotId}`, {
-    method: "PUT",
-    body: JSON.stringify(payload)
-    });
-    if(res.ok){
-        const editedSpot = await res.json();
-        dispatch(updateSpot(editedSpot))
-    }
 }
 
 // fetch a spot by its id
@@ -84,9 +89,49 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     }
 }
 
+// update a spot owned by the user
+export const editSpot = (spotId, payload) => async (dispatch) => {
+const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "PUT",
+    body: JSON.stringify(payload)
+    });
+    if(res.ok){
+        const editedSpot = await res.json();
+        dispatch(updateSpot(editedSpot))
+    }
+}
+
+// create a new spot under the logged in user
+export const createSpot = (payload) => async (dispatch) => {
+const res = await csrfFetch('/api/spots', {
+    method: "POST",
+    body: JSON.stringify(payload)
+});
+if(res.ok){
+    const newSpot = await res.json();
+    dispatch(addSpot(newSpot))
+    return newSpot
+}
+}
+
+// delete a spot owned by the logged in user
+export const removeSpot = (spotId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: "DELETE"
+    });
+    if(res.ok){
+        const message = await res.json();
+        dispatch(deleteSpot(spotId))
+        return message
+    }
+}
+
+const initialState = {
+    detailedSpot: {}
+}
 
 // reducer
-const spotsReducer = (state = {}, action) => {
+const spotsReducer = (state = initialState, action) => {
     const newState = {...state}
 
     switch(action.type){
@@ -94,17 +139,23 @@ const spotsReducer = (state = {}, action) => {
             action.spots.forEach(spot => newState[spot.id] = spot)
             return newState
 
-            case SET_SPOT_DETAILS:
-                return {
-                  ...state,
-                  detailedSpot: action.payload
-                };
+         case SET_SPOT_DETAILS:
+            return {
+              ...state,
+              detailedSpot: action.spot
+            };
 
-            case UPDATE_SPOT:
-                const spotId = action.payload.id
-                newState[spotId] = {...state[spotId], ...action.payload}
-                newState.detailedSpot = {...state.detailedSpot, ...action.payload}
-                return newState
+        case ADD_SPOT:
+            const newSpot = action.payload;
+            return {
+              ...state,
+              [newSpot.id]: newSpot
+            };
+        case UPDATE_SPOT:
+            const spotId = action.payload.id
+            newState[spotId] = {...state[spotId], ...action.payload}
+            newState.detailedSpot = {...state.detailedSpot, ...action.payload}
+            return newState
 
         case SET_USER_SPOTS:
             const userSpots = {};
@@ -116,6 +167,11 @@ const spotsReducer = (state = {}, action) => {
                 ...state,
                 userSpots
             }
+
+        case DELETE_SPOT:
+            const { [action.payload]: deletedSpot, ...updatedSpot } = state;
+            return updatedSpot;
+
         default:
             return state;
     }

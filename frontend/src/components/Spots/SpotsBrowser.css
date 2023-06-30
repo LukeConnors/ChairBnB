@@ -1,0 +1,16 @@
+img{
+    cursor: pointer;
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+img:hover{
+    transform: scale(1.02);
+}
+.tile-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }

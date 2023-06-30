@@ -8,6 +8,8 @@ import Navigation from "./components/Navigation";
 import SpotsBrowser from "./components/Spots/SpotsBrowser";
 import SpotDetails from "./components/Spots/SpotDetails";
 import UserSpots from "./components/Spots/UserSpots"
+import NewSpotForm from "./components/Spots/NewSpotForm";
+import './index.css'
 
 
 function App() {
@@ -34,6 +36,9 @@ function App() {
       </Route>
       <Route exact path="/signup">
         <SignupFormPage />
+      </Route>
+      <Route exact path='/newSpot'>
+      <NewSpotForm />
       </Route>
       <Route exact path="/">
     <SpotsBrowser />

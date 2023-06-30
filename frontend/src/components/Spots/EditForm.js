@@ -26,6 +26,9 @@ const updateName = (e) => setName(e.target.value)
 const updateDescription = (e) => setDescription(e.target.value)
 const updatePrice = (e) => setPrice(e.target.value)
 
+const handleCancelClick = (e) => {
+    hideForm()
+};
 const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -45,12 +48,9 @@ const handleSubmit = async (e) => {
         hideForm()
         history.push(`/spots/${spot.id}`)
     }
+    handleCancelClick()
     };
 
-    const handleCancelClick = (e) => {
-        e.preventDefault();
-        hideForm()
-    };
 
     return (
         <div>

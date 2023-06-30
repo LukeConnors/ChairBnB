@@ -1,59 +1,56 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import * as sessionActions from '../../store/session';
 import './Navigation.css';
 
-function Navigation({ isLoaded }){
-    const sessionUser = useSelector(state => state.session.user);
-    // const dispatch = useDispatch();
+function Navigation({ isLoaded }) {
+  const sessionUser = useSelector(state => state.session.user);
+  const history = useHistory();
 
-    // const removeUser = (e) => {
-    //   e.preventDefault();
-    //   dispatch(sessionActions.removeUser());
-    // };
-
-    let sessionLinks;
-    if (sessionUser) {
-      sessionLinks = (
+  let sessionLinks;
+  if (sessionUser) {
+    sessionLinks = (
       <div className='user'>
-        <div>
-        <h3>Create a new spot</h3>
+        <div className='nav-link'>
+          <NavLink to='/newSpot'>Create a new spot</NavLink>
         </div>
-        <li>
+        <div className='nav-link'>
+        <NavLink exact to="/" className='home-button'>Home</NavLink>
+        </div>
+        <div className='profile-button'>
           <ProfileButton user={sessionUser} />
-        </li>
+        </div>
       </div>
-      );
-    } else {
-      sessionLinks = (
+    );
+  } else {
+    sessionLinks = (
       <div className='no-user'>
-        <li className='login'>
+        <div className='nav-link'>
           <NavLink to="/login">Log In</NavLink>
-        </li>
-        <li className='signup'>
+        </div>
+        <div className='nav-link'>
           <NavLink to="/signup">Sign Up</NavLink>
-        </li>
+        </div>
       </div>
-      );
-    }
-
-    return (
-  <div className='nav-container'>
-      <div className='logo'>
-      <a>logo</a>
-      </div>
-    <div className='home'>
-      <ul>
-        <li>
-          <NavLink exact to="/">Home</NavLink>
-        </li>
-        {isLoaded && sessionLinks}
-      </ul>
-    </div>
-  </div>
     );
   }
 
-  export default Navigation;
+  return (
+    <div className='nav-container'>
+      <div className='logo'>
+        <img
+          src='https://res.cloudinary.com/dyt7uoeck/image/upload/v1688118546/ChairBnbLogo_gy8gyz.png'
+          className='logo'
+          onClick={() => history.push('/')}
+          alt='Logo'
+        />
+      </div>
+      <div className='home'>
+          {isLoaded && sessionLinks}
+      </div>
+    </div>
+  );
+}
+
+export default Navigation;

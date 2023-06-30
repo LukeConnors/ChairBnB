@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSelector } from '../../store/session';
 import * as spotActions from '../../store/spots'
 import EditSpotForm from "./EditForm";
+import './SpotDetails.css'
 
 const SpotDetails = () => {
+    const history = useHistory()
     const dispatch = useDispatch();
     const {spotId} = useParams();
     const user = useSelector(userSelector)
@@ -17,6 +19,11 @@ const SpotDetails = () => {
     dispatch(spotActions.fetchSpotDetails(spotId))
     setShowEditSpotForm(false)
     }, [dispatch, spotId])
+
+    const handleDeleteSpot = async () => {
+     await dispatch(spotActions.removeSpot(spotId))
+     history.push('/spots/current')
+    }
 
     const handleEditSpot = () => {
         setShowEditSpotForm(!showEditSpotForm)
@@ -59,6 +66,9 @@ const SpotDetails = () => {
               <div>
                 <button onClick={handleEditSpot}>
                   {showEditSpotForm ? "Cancel" : "Edit Spot"}
+                </button>
+                <button onClick={handleDeleteSpot}>
+                  Delete Spot
                 </button>
                 {showEditSpotForm && (
                   <EditSpotForm spot={spot} hideForm={() => setShowEditSpotForm(false)} />
