@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
+import { useModalContext } from '../../context/modalContext';
 
 function SignupFormPage() {
     const dispatch = useDispatch();
@@ -14,8 +15,13 @@ function SignupFormPage() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
+    const { setModal } = useModalContext();
 
 if (sessionUser) return <Redirect to="/" />;
+
+const handleCancelClick = (e) => {
+  setModal(null)
+  };
 
     const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,72 +48,87 @@ if (sessionUser) return <Redirect to="/" />;
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
+    <div className="container">
+      <h1 className="log-in">Sign Up</h1>
       <form onSubmit={handleSubmit}>
+      <div className="form-row">
+        {errors.email && <p className="errors">{errors.email}</p>}
         <label>
           Email
+        </label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
+            // required
+            />
+          </div>
+        <div className="form-row">
+        {errors.username && <p className="errors">{errors.username}</p>}
         <label>
           Username
+        </label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
+            // required
+            />
+          </div>
+        <div className="form-row">
+        {errors.firstName && <p className="errors">{errors.firstName}</p>}
         <label>
           First Name
+        </label>
           <input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            required
+            // required
           />
-        </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        </div>
+        <div className="form-row">
+        {errors.lastName && <p className="errors">{errors.lastName}</p>}
         <label>
           Last Name
+        </label>
           <input
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            required
+            // required
           />
-        </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        </div>
+        <div className="form-row">
+        {errors.password && <p className="errors">{errors.password}</p>}
         <label>
           Password
+        </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            // required
           />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
+        </div>
+        <div className="form-row">
+        {errors.confirmPassword && <p className="errors">{errors.confirmPassword}</p>}
         <label>
           Confirm Password
+        </label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
+            // required
           />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        </div>
+        <div>
+        <button className='sign-button' type="submit">Sign Up</button>
+        <button className="cancel-button" type="cancel" onClick={handleCancelClick}>Cancel</button>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
 

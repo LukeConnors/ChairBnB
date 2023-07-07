@@ -1,14 +1,3 @@
-/* h1 {
-    color: white;
-	font-size: 40px;
-	text-shadow: -1px 1px 5px blue,
-				  1px 1px 5px blue,
-				  1px -1px 2px blue,
-				  -1px -1px 2px blue;
-
-    text-align: center;
-
-} */
 
 .container {
     display: flex;
@@ -32,4 +21,21 @@
   form label {
     text-align: center;
     margin-bottom: 5px;
+  }
+
+  .log-in, label, .demo{
+    color: white;
+  }
+
+  .demo{
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
+  .log-button {
+    margin-right: 20px;
+  }
+
+  .error{
+    color: red;
   }

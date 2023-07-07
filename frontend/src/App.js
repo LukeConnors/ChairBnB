@@ -10,11 +10,14 @@ import SpotDetails from "./components/Spots/SpotDetails";
 import UserSpots from "./components/Spots/UserSpots"
 import NewSpotForm from "./components/Spots/NewSpotForm";
 import './index.css'
-
+import { useModalContext } from "./context/modalContext";
+import Modal from "./components/Modals/Modal";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const {modal} = useModalContext()
+
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
@@ -22,6 +25,7 @@ function App() {
 
   return (
     <>
+    {modal && <Modal />}
     <Navigation isLoaded={isLoaded} />
 {
    isLoaded && <Switch>

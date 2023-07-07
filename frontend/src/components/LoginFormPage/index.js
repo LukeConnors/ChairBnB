@@ -4,6 +4,7 @@ import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import "./LoginForm.css"
+import { useModalContext } from '../../context/modalContext';
 
 function LoginFormPage() {
 const dispatch = useDispatch();
@@ -13,8 +14,14 @@ const [password, setPassword] = useState("");
 const [errors, setErrors] = useState({});
 const [loginError, setLoginError] = useState(null);
 const history = useHistory()
+const { setModal } = useModalContext();
 
 if (sessionUser) return <Redirect to="/" />;
+
+const handleCancelClick = (e) => {
+  setModal(null)
+  };
+
 
 const handleSubmit = (e) => {
   e.preventDefault();
@@ -24,6 +31,7 @@ const handleSubmit = (e) => {
   dispatch(sessionActions.logIn(user))
     .then(() => {
       history.push('/');
+      setModal(null)
     })
     .catch(async (res) => {
       const data = await res.json();
@@ -44,35 +52,38 @@ const handleSubmit = (e) => {
       const data = await res.json();
       if (data && data.errors) setErrors(data.errors);
     });
+    setModal(null)
   }
 
   return (
     <div className="container">
-      <h1>Log In</h1>
+      <h1 className='log-in'>Log In</h1>
       {errors.credential && <p className='error'>{errors.credential}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-row">
-          <label>Username or Email</label>
+          <label className='user-name'>Username or Email</label>
           <input
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            required
+            // required
           />
         </div>
         <div className="form-row">
-          <label>Password</label>
+          <div className='error'>{errors?.password}</div>
+          <label className='password'>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            // required
           />
         </div>
-        <div>
           <a className='demo' onClick={handleDemoLogin}>Demo User</a>
+          <div>
+        <button className='log-button' type="submit">Log In</button>
+        <button className='cancel-button' type='cancel' onClick={handleCancelClick}>Cancel</button>
           </div>
-        <button type="submit">Log In</button>
       </form>
     </div>
   );

@@ -1,3 +1,28 @@
 button {
     width: auto;
 }
+
+.loading{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 40px;
+}
+
+img {
+    height: 300px;
+    width: 300px;
+}
+
+.reviews{
+    margin-top: 20px;
+    border-top: 1px solid rgba(168, 167, 167, 0.5);
+}
+
+.stars-div {
+    display: flex;
+    align-items: center;
+}
+
+.rev-info {
+    display: flex;
+    align-items: center;
+}

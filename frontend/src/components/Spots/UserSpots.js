@@ -28,7 +28,7 @@ function UserSpots(){
               return (
                 <div className='tile-container' key={spot?.id}>
                 <div className='image-container'>
-                <img className="spot-img" onClick={redirectToSpot} src={spot?.previewImg} alt={`No image set for ${spot.name}`} />
+                <img className="spot-img" onClick={redirectToSpot} src={spot?.previewImg || 'https://res.cloudinary.com/dyt7uoeck/image/upload/v1688189212/download_vnokrd.png'} alt={`No image set for ${spot.name}`} />
                 </div>
                 <h2>{spot?.name}</h2>
                 <div>

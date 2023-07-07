@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as spotActions from '../../store/spots'
 import {useHistory} from 'react-router-dom'
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const EditSpotForm = ({spot, hideForm}) => {
+const {spotId} = useParams()
 const dispatch = useDispatch();
 const history = useHistory()
 const [address, setAddress] = useState(spot.address)
@@ -15,6 +17,7 @@ const [lng, setLng] = useState(spot.lng)
 const [name, setName] = useState(spot.name)
 const [description, setDescription] = useState(spot.description)
 const [price, setPrice] = useState(spot.price)
+const [errors, setErrors] = useState({})
 
 const updateAddress = (e) => setAddress(e.target.value)
 const updateCity = (e) => setCity(e.target.value)
@@ -44,95 +47,99 @@ const handleSubmit = async (e) => {
         price
     }
     let editedSpot = await dispatch(spotActions.editSpot(spot.id, payload))
-    if(editedSpot){
+    dispatch(spotActions.fetchSpotDetails(spotId))
+    if(editedSpot && editedSpot.id){
         hideForm()
         history.push(`/spots/${spot.id}`)
+    } else {
+        const res = await editedSpot.json()
+        setErrors(res.errors)
+        console.log(errors)
     }
-    handleCancelClick()
     };
 
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
+            <div className="errors">{errors?.address}</div>
             <input
             type="text"
             placeholder="Address"
-            required
             min="1"
             value={address}
             onChange={updateAddress}
             >
             </input>
+            <div className="errors">{errors?.city}</div>
             <input
             type="text"
             placeholder="City"
-            required
             min="1"
             value={city}
             onChange={updateCity}
             >
             </input>
+            <div className="errors">{errors?.state}</div>
             <input
             type="text"
             placeholder="State"
-            required
             min="1"
             value={state}
             onChange={updateState}
             >
             </input>
+            <div className="errors">{errors?.country}</div>
             <input
             type="text"
             placeholder="Country"
-            required
             min="1"
             value={country}
             onChange={updateCountry}
             >
             </input>
+            <div className="errors">{errors?.lat}</div>
             <input
             type="number"
             placeholder="Latitude"
-            required
             // min="4"
             // max="12"
             value={lat}
             onChange={updateLat}
             >
             </input>
+            <div className="errors">{errors?.lng}</div>
             <input
             type="number"
             placeholder="Longitude"
-            required
             // min="4"
             // max="12"
             value={lng}
             onChange={updateLng}
             >
             </input>
+            <div className="errors">{errors?.name}</div>
             <input
             type="text"
             placeholder="Name"
-            required
             min="1"
             value={name}
             onChange={updateName}
             >
             </input>
+            <div className="errors">{errors?.description}</div>
             <input
             type="text"
             placeholder="Description"
-            required
             min="1"
             value={description}
             onChange={updateDescription}
             >
             </input>
+            <div className="errors">{errors?.price}</div>
             <input
             type="number"
             placeholder="Price"
-            required
             min="1"
             value={price}
             onChange={updatePrice}

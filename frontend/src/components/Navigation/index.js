@@ -3,35 +3,42 @@ import { NavLink, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
+import { useModalContext } from "../../context/modalContext";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
   const history = useHistory();
+  const { setModal } = useModalContext();
+
+
+  const handleHomeClick = () => {
+    history.push('/');
+  }
 
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
       <div className='user'>
-        <div className='nav-link'>
-          <NavLink to='/newSpot'>Create a new spot</NavLink>
-        </div>
-        <div className='nav-link'>
-        <NavLink exact to="/" className='home-button'>Home</NavLink>
-        </div>
-        <div className='profile-button'>
+          <button className='nav-button new-spot' onClick={(e) => {
+            e.preventDefault();
+            setModal('newSpotForm');
+          }}>Create a new spot</button>
+          <button className='nav-button home-button' onClick={handleHomeClick}>Home</button>
           <ProfileButton user={sessionUser} />
-        </div>
       </div>
     );
   } else {
     sessionLinks = (
       <div className='no-user'>
-        <div className='nav-link'>
-          <NavLink to="/login">Log In</NavLink>
-        </div>
-        <div className='nav-link'>
-          <NavLink to="/signup">Sign Up</NavLink>
-        </div>
+          <button className='home-button' onClick={handleHomeClick}>Home</button>
+          <button className='uLog' onClick={(e) => {
+            e.preventDefault();
+            setModal('logInForm')
+          }}>Log In</button>
+          <button className='uSign' onClick={(e) => {
+            e.preventDefault();
+            setModal('signUpForm')
+          }}>Sign up</button>
       </div>
     );
   }
@@ -47,7 +54,7 @@ function Navigation({ isLoaded }) {
         />
       </div>
       <div className='home'>
-          {isLoaded && sessionLinks}
+        {isLoaded && sessionLinks}
       </div>
     </div>
   );

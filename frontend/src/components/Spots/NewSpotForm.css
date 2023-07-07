@@ -1,0 +1,47 @@
+
+.form {
+    margin-bottom: 20px;
+  }
+
+  .form-input,
+  textarea {
+    height: 50px;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
+
+  textarea {
+    resize: vertical;
+    border-color: lightgray;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+}
+
+
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+
+  .submit{
+    height: 50px;
+    width: 100px;
+    margin-right: 20px;
+  }
+
+  .cancel {
+    height: 50px;
+    width: 100px;
+  }
+
+
+  .errors {
+    color: red;
+  }

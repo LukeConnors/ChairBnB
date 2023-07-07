@@ -17,6 +17,7 @@
 .user{
     display: flex;
     justify-content: flex-end;
+    margin-right: 40px;
 }
 
 .home {
@@ -60,7 +61,6 @@ button{
 
 .profile-button{
     margin-bottom: 75px;
-
 }
 
 
@@ -75,3 +75,26 @@ button{
 .profile-button:hover {
   transform: scale(1.03);
 }
+
+.no-user {
+    margin-bottom: 200px;
+}
+
+.new-spot{
+    margin-bottom: 100px;
+}
+
+.nav-button {
+    cursor: pointer;
+    font-size: 17px;
+    /* padding: 10px 15px; */
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-button, .uLog, .uSign {
+    margin-left: 10px;
+    margin-right: 10px;
+  }

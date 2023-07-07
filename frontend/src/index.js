@@ -8,6 +8,8 @@ import configureStore from './store';
 import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from "./store/session"
 import * as spotsActions from './store/spots'
+import * as reviewsActions from './store/reviews'
+import ModalProvider from './context/modalContext';
 
 const store = configureStore();
 
@@ -18,15 +20,18 @@ if (process.env.NODE_ENV !== 'production') {
   window.store = store;
   window.sessionActions = sessionActions;
   window.spotsActions = spotsActions;
+  window.reviewsActions = reviewsActions
 }
 
 function Root() {
   return (
-    <ReduxProvider store={store}>
+  <ReduxProvider store={store}>
+    <ModalProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </ReduxProvider>
+    </ModalProvider>
+  </ReduxProvider>
   );
 }
 

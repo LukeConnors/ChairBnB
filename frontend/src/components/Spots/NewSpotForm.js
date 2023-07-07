@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as spotActions from '../../store/spots'
 import {useHistory} from 'react-router-dom'
+import './NewSpotForm.css'
+import { useModalContext } from "../../context/modalContext";
 
 const NewSpotForm = () => {
 const dispatch = useDispatch();
@@ -15,6 +17,10 @@ const [lng, setLng] = useState('')
 const [name, setName] = useState('')
 const [description, setDescription] = useState('')
 const [price, setPrice] = useState('')
+const [url, setUrl] = useState('')
+const [preview, setPreview] = useState(true)
+const [errors, setErrors] = useState({})
+const {setModal} = useModalContext()
 
 const updateAddress = (e) => setAddress(e.target.value)
 const updateCity = (e) => setCity(e.target.value)
@@ -25,12 +31,23 @@ const updateLng = (e) => setLng(e.target.value)
 const updateName = (e) => setName(e.target.value)
 const updateDescription = (e) => setDescription(e.target.value)
 const updatePrice = (e) => setPrice(e.target.value)
+const updateUrl = (e) => setUrl(e.target.value)
 
 const handleCancelClick = (e) => {
-    history.push('/')
+setModal(null)
 };
 const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const previewImagePayload = {
+      url,
+      preview
+    }
+
+    const imagePayload = {
+      url,
+      preview
+    }
 
     const payload = {
         address,
@@ -44,105 +61,93 @@ const handleSubmit = async (e) => {
         price
     }
     let newSpot = await dispatch(spotActions.createSpot(payload))
-    if(newSpot){
+    if(newSpot && newSpot.id){
         history.push(`/`)
+    } else {
+      const res = await newSpot.json()
+      setErrors(res.errors)
     }
-    history.push('/')
     };
-    return(
-
-        <div>
-                    <form onSubmit={handleSubmit}>
-                    <input
-                    type="text"
-                    placeholder="Address"
-                    required
-                    min="1"
-                    value={address}
-                    onChange={updateAddress}
-                    >
-                    </input>
-                    <input
-                    type="text"
-                    placeholder="City"
-                    required
-                    min="1"
-                    value={city}
-                    onChange={updateCity}
-                    >
-                    </input>
-                    <input
-                    type="text"
-                    placeholder="State"
-                    required
-                    min="1"
-                    value={state}
-                    onChange={updateState}
-                    >
-                    </input>
-                    <input
-                    type="text"
-                    placeholder="Country"
-                    required
-                    min="1"
-                    value={country}
-                    onChange={updateCountry}
-                    >
-                    </input>
-                    <input
-                    type="number"
-                    placeholder="Latitude"
-                    required
-                    // min="4"
-                    // max="12"
-                    value={lat}
-                    onChange={updateLat}
-                    >
-                    </input>
-                    <input
-                    type="number"
-                    placeholder="Longitude"
-                    required
-                    // min="4"
-                    // max="12"
-                    value={lng}
-                    onChange={updateLng}
-                    >
-                    </input>
-                    <input
-                    type="text"
-                    placeholder="Name"
-                    required
-                    min="1"
-                    value={name}
-                    onChange={updateName}
-                    >
-                    </input>
-                    <input
-                    type="text"
-                    placeholder="Description"
-                    required
-                    min="1"
-                    value={description}
-                    onChange={updateDescription}
-                    >
-                    </input>
-                    <input
-                    type="number"
-                    placeholder="Price"
-                    required
-                    min="1"
-                    value={price}
-                    onChange={updatePrice}
-                    >
-                    </input>
-                    <button type="submit">Create Spot</button>
-                    <button type="cancel" onClick={handleCancelClick}>
-                        Cancel
-                    </button>
-                </form>
-
-                </div>
+    return (
+        <div className="form">
+          <form onSubmit={handleSubmit}>
+          <div className="errors">{errors?.address}</div>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="Address"
+              value={address}
+              onChange={updateAddress}
+            />
+            <div className="errors">{errors?.city}</div>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="City"
+              value={city}
+              onChange={updateCity}
+            />
+            <div className="errors">{errors?.state}</div>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="State"
+              value={state}
+              onChange={updateState}
+            />
+            <div className="errors">{errors?.country}</div>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="Country"
+              value={country}
+              onChange={updateCountry}
+            />
+            <div className="errors">{errors?.lat}</div>
+            <input
+              type="number"
+              className="form-input"
+              placeholder="Latitude"
+              value={lat}
+              onChange={updateLat}
+            />
+            <div className="errors">{errors?.lng}</div>
+            <input
+              type="number"
+              className="form-input"
+              placeholder="Longitude"
+              value={lng}
+              onChange={updateLng}
+            />
+            <div className="errors">{errors?.name}</div>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="Name"
+              value={name}
+              onChange={updateName}
+            />
+            <div className="errors">{errors?.description}</div>
+            <textarea
+            className="form-input"
+             placeholder="Description"
+             value={description}
+            onChange={updateDescription}
+            />
+            <div className="errors">{errors?.price}</div>
+            <input
+              type="number"
+              className="form-input"
+              placeholder="Price"
+              value={price}
+              onChange={updatePrice}
+            />
+            <div className="form-buttons">
+      <button type="submit" className="submit">Create Spot</button>
+      <button type="cancel"  className="cancel" onClick={handleCancelClick}>Cancel</button>
+    </div>
+  </form>
+</div>
     )
 }
 export default NewSpotForm
