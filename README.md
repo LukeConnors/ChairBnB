@@ -1,11 +1,11 @@
-# `<name of application here>`
+# `ChairBnB`
 
 ## Link to Live Site
 https://lukes-chairbnb.onrender.com/
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+`https://dbdiagram.io/d/640a7f7e296d97641d86d43e`
 
 ## API Documentation
 
