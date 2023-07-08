@@ -11,6 +11,10 @@ function Navigation({ isLoaded }) {
   const { setModal } = useModalContext();
 
 
+const handleNewSpot = () => {
+  history.push('/newSpot')
+}
+
   const handleHomeClick = () => {
     history.push('/');
   }
@@ -19,10 +23,7 @@ function Navigation({ isLoaded }) {
   if (sessionUser) {
     sessionLinks = (
       <div className='user'>
-          <button className='nav-button new-spot' onClick={(e) => {
-            e.preventDefault();
-            setModal('newSpotForm');
-          }}>Create a new spot</button>
+          <button className='ns-button' onClick={handleNewSpot}>Create a new spot</button>
           <button className='nav-button home-button' onClick={handleHomeClick}>Home</button>
           <ProfileButton user={sessionUser} />
       </div>

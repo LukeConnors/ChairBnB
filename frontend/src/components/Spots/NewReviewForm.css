@@ -1,0 +1,27 @@
+.form-cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 300px;
+    width: 300px;
+    border-radius: 20px;
+}
+
+.rating {
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    height: 25px;
+}
+
+
+.sub {
+    margin-right: 15px;
+    border-radius: 10px;
+    color: rgb(178, 35, 35)
+}
+
+.canc{
+    border-radius: 10px;
+}

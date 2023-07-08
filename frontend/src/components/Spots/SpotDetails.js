@@ -14,7 +14,7 @@ const SpotDetails = () => {
     const dispatch = useDispatch();
     const {spotId} = useParams();
     const user = useSelector(userSelector)
-    const spot = useSelector(spotActions.spotDetailsSelector())
+    const spot = useSelector(state => state.spots.detailedSpot)
     const [showEditSpotForm, setShowEditSpotForm] = useState(false)
     const [showReviewForm, setShowReviewForm] = useState(false)
     const { setModal } = useModalContext();
@@ -28,60 +28,71 @@ const SpotDetails = () => {
 
 
 
-    const handleDeleteSpot = async () => {
-     await dispatch(spotActions.removeSpot(spotId))
-     history.push('/spots/current')
-    }
     const handleNewReview = () => {
       setShowReviewForm(!showEditSpotForm)
     }
 
-    const handleEditSpot = () => {
-        setShowEditSpotForm(!showEditSpotForm)
+    const handleReserve = () => {
+      window.alert('Feature coming soon.')
     }
-    if (!spot.name) {
+
+    const handleEditSpot = () => {
+       history.push('/editSpot')
+    }
+    if (!spot?.name) {
         return <div className="loading">Loading spot details...</div>;
       }
 
 
       const { name, city, state, country, SpotImages, Owner, description, price, avgStarRating, numReviews } = spot;
 
-  if(!user || user.id === spot.ownerId){
+  if(!user || user?.id === spot?.ownerId){
 
     return (
-      <div>
+      <div className="details">
         <h1>{name}</h1>
         <h2>{city}, {state}, {country}</h2>
+        <div className="img-container">
         {SpotImages && SpotImages.length > 0 ? (
-          SpotImages.map(image => (
-            <img className='detail-img'key={image.id} src={image.url} alt={name} />
-          ))
-        ) : (
-          <p>No images available</p>
-        )}
-        <div>
+        <>
+      <img className='main-img' key={SpotImages[0].id} src={SpotImages[0].url} alt={name} />
+      {SpotImages.slice(1).map(image => (
+        <img className='main-img' key={image.id} src={image.url} alt={name} />
+         ))}
+        </>
+      ) : (
+      <p>No images available</p>
+      )}
+      </div>
+
+      <div className="chair-details">
+        <div className="chair-info">
           {Owner && <p>Hosted by: {Owner?.firstName} {Owner?.lastName}</p>}
-        </div>
-        <div>
           <p>{description}</p>
         </div>
-        <div>
+
+        <div className="star-cont">
+          <div className="boxy">
+            <div className="price">
           <p>${price} per day</p>
-        </div>
-        <div className="stars-div">
+            </div>
+        <div className="rating-div">
         <i className="fa-solid fa-star" style={{ color: "#b00c0c" }}></i>
           <p>{avgStarRating?.toFixed(2)}</p>
-        </div>
-        <div>
+             <p className="dot">·</p>
           <p>{numReviews} {numReviews === 1 ? 'review' : 'reviews'}</p>
         </div>
+          </div>
         <div>
           {user && user.id === spot.ownerId ? (
             <div>
-              <button onClick={handleEditSpot}>
-                {showEditSpotForm ? "Cancel" : "Edit Spot"}
+              <button className="ed-spot" onClick={handleEditSpot}>
+                Edit Spot
               </button>
-              <button onClick={handleDeleteSpot}>
+              <button className="del-spot" onClick={(e) => {
+                e.preventDefault();
+                setModal('deleteSpot')
+              }}>
                 Delete Spot
               </button>
               {showEditSpotForm && (
@@ -89,54 +100,74 @@ const SpotDetails = () => {
               )}
             </div>
           ) : (
-            <button>Reserve</button>
+            <div className="jerry">
+            <button className='reserve' onClick={handleReserve}>Reserve</button>
+            </div>
           )}
+        </div>
+          </div>
+        </div>
+
+
           <div className="reviews">
           <div className="rev-info">
           <i className="fa-solid fa-star" style={{ color: "#b00c0c" }}></i>
-          <p>{avgStarRating?.toFixed(2)} {numReviews} {numReviews === 1 ? 'review' : 'reviews'}</p>
+          <p>{avgStarRating?.toFixed(2)}</p>
+          <p className="dot">·</p>
+          <p> {numReviews} {numReviews === 1 ? 'review' : 'reviews'}</p>
         </div>
         <SpotReviews />
           </div>
-        </div>
       </div>
     );
+
   } else {
 
     return (
-      <div>
+      <div className="details">
         <h1>{name}</h1>
         <h2>{city}, {state}, {country}</h2>
+        <div className="img-container">
         {SpotImages && SpotImages.length > 0 ? (
-          SpotImages.map(image => (
-            <img className='detail-img'key={image.id} src={image.url} alt={name} />
-          ))
-        ) : (
-          <p>No images available</p>
-        )}
-        <div>
+        <>
+      <img className='main-img' key={SpotImages[0].id} src={SpotImages[0].url} alt={name} />
+      {SpotImages.slice(1).map(image => (
+        <img className='main-img' key={image.id} src={image.url} alt={name} />
+         ))}
+        </>
+      ) : (
+      <p>No images available</p>
+      )}
+      </div>
+
+      <div className="chair-details">
+        <div className="chair-info">
           {Owner && <p>Hosted by: {Owner?.firstName} {Owner?.lastName}</p>}
-        </div>
-        <div>
           <p>{description}</p>
         </div>
-        <div>
+
+        <div className="star-cont">
+          <div className="boxy">
+            <div className="price">
           <p>${price} per day</p>
-        </div>
-        <div className="stars-div">
+            </div>
+        <div className="rating-div">
         <i className="fa-solid fa-star" style={{ color: "#b00c0c" }}></i>
           <p>{avgStarRating?.toFixed(2)}</p>
-        </div>
-        <div>
+             <p className="dot">·</p>
           <p>{numReviews} {numReviews === 1 ? 'review' : 'reviews'}</p>
         </div>
+          </div>
         <div>
           {user && user.id === spot.ownerId ? (
             <div>
-              <button onClick={handleEditSpot}>
-                {showEditSpotForm ? "Cancel" : "Edit Spot"}
+              <button className="ed-spot" onClick={handleEditSpot}>
+                Edit Spot
               </button>
-              <button onClick={handleDeleteSpot}>
+              <button className="del-spot" onClick={(e) => {
+                e.preventDefault();
+                setModal('deleteSpot')
+              }}>
                 Delete Spot
               </button>
               {showEditSpotForm && (
@@ -144,22 +175,24 @@ const SpotDetails = () => {
               )}
             </div>
           ) : (
-            <button>Reserve</button>
+            <div className="jerry">
+            <button className='reserve' onClick={handleReserve}>Reserve</button>
+            </div>
           )}
+        </div>
+          </div>
+        </div>
+
+
           <div className="reviews">
           <div className="rev-info">
           <i className="fa-solid fa-star" style={{ color: "#b00c0c" }}></i>
-          <p>{avgStarRating?.toFixed(2)} {numReviews} {numReviews === 1 ? 'review' : 'reviews'}</p>
-        </div>
-        <div>
-          <button onClick={(e) => {
-            e.preventDefault();
-            setModal('reviewForm')
-          }}>Post a review</button>
+          <p>{avgStarRating?.toFixed(2)}</p>
+          <p className="dot">·</p>
+          <p> {numReviews} {numReviews === 1 ? 'review' : 'reviews'}</p>
         </div>
         <SpotReviews />
           </div>
-        </div>
       </div>
     );
 

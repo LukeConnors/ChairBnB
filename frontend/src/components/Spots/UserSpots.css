@@ -1,0 +1,50 @@
+.page-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.t-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-basis: calc(25% - 20px);
+    cursor: pointer;
+  }
+
+  .i-container {
+    flex: 1;
+  }
+
+  .s-img {
+    width: 100%;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .s-img:hover {
+    transform: scale(1.02);
+  }
+
+  .s-info{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .l-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .r-info {
+    display: flex;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+  }

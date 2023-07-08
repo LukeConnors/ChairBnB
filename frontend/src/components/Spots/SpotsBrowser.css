@@ -11,18 +11,22 @@
     align-items: center;
     text-align: center;
     flex-basis: calc(25% - 20px);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
   }
 
   .spot-img {
-    cursor: pointer;
     width: 300px;
     height: 300px;
     object-fit: cover;
     border-radius: 10px;
-    transition: transform 0.2s ease-in-out;
   }
 
-  .spot-img:hover {
+  .tool-tip-text{
+  visibility: hidden;
+  }
+  .spot-tile:hover, .tool-tip-text {
+    visibility: visible;
     transform: scale(1.02);
   }
 

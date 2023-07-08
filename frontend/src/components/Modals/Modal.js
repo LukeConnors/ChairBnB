@@ -4,6 +4,7 @@ import SignupFormPage from '../SignupFormPage'
 import NewReviewForm from '../Spots/NewReviewForm'
 import EditReviewForm from '../Spots/EditReviewForm'
 import { useModalContext } from '../../context/modalContext'
+import DeleteSpot from './DeleteSpot'
 import "./Modal.css"
 
 const Modal = () => {
@@ -33,6 +34,10 @@ modalToRender = <NewReviewForm/>
 break
 case 'editReview':
 modalToRender = <EditReviewForm/>
+break
+case 'deleteSpot':
+modalToRender = <DeleteSpot/>
+break
 
 default:
 handleModalClose()

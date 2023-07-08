@@ -46,14 +46,16 @@ function SpotsBrowser() {
                   alt={`No image set for ${spot?.name}`}
                 />
               </div>
+                <span className='tool-tip-text'>{spot?.name}</span>
               <div className='spot-info'>
-                <div className='info-text'>
+                <div className='info-text-left'>
                   <h3>{spot?.city}, {spot?.state}</h3>
-                  <h3>${spot?.price} per night</h3>
+                  <h3>${spot?.price} per day</h3>
                 </div>
-                <div className='info-text'>
-                <h3>{spot?.avgStarRating ? spot?.avgStarRating.toFixed(2) : 0}</h3>
-                </div>
+                <div className='info-text-right'>
+                  <i className="fa-solid fa-star" style={{ color: "#b00c0c" }}></i>
+                <h3 className='stars-num'>{spot?.avgStarRating ? spot?.avgStarRating.toFixed(2) : 'New'}</h3>
+              </div>
               </div>
             </div>
           );
@@ -61,11 +63,10 @@ function SpotsBrowser() {
           return null;
         } else {
           return (
-            <div key={spot.id} className='spot-tile'>
+            <div key={spot.id} className='spot-tile' onClick={redirectToSpot}>
               <div className='image-container'>
                 <img
                   className='spot-img'
-                  onClick={redirectToSpot}
                   src={
                     spot?.previewImg ||
                     'https://res.cloudinary.com/dyt7uoeck/image/upload/v1688189212/download_vnokrd.png'
@@ -73,16 +74,17 @@ function SpotsBrowser() {
                   alt={`No image set for ${spot?.name}`}
                 />
               </div>
+              <span className='tool-tip-text'>{spot?.name}</span>
               <div className='spot-info'>
                 <div className='info-text-left'>
                   <h3 className='text'>
                     {spot?.city}, {spot?.state}
                   </h3>
-                    <h3>${spot?.price} per night</h3>
+                    <h3>${spot?.price} per day</h3>
                 </div>
                 <div className='info-text-right'>
                   <i className="fa-solid fa-star" style={{ color: "#b00c0c" }}></i>
-                <h3 className='stars-num'>{spot?.avgStarRating ? spot?.avgStarRating.toFixed(2) : 'No stars'}</h3>
+                <h3 className='stars-num'>{spot?.avgStarRating ? spot?.avgStarRating.toFixed(2) : 'New'}</h3>
               </div>
             </div>
           </div>

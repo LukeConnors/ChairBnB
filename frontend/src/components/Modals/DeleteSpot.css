@@ -1,0 +1,37 @@
+.del-background{
+    background-color: white;
+    width: 400px;
+    height: 150px;
+    border-radius: 20px;
+}
+
+.del-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.del-title {
+    display: flex;
+    justify-content: center;
+}
+
+.del-message {
+    display: flex;
+    justify-content: center;
+}
+
+
+.yes-button{
+    background-color: rgb(165, 16, 16);
+    color: white;
+    margin-right: 20px;
+    border-radius: 20px;
+}
+
+.no-button{
+    background-color: rgb(36, 33, 33);
+    color: white;
+    margin-right: 20px;
+    border-radius: 20px;
+}

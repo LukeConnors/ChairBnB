@@ -12,6 +12,7 @@ import NewSpotForm from "./components/Spots/NewSpotForm";
 import './index.css'
 import { useModalContext } from "./context/modalContext";
 import Modal from "./components/Modals/Modal";
+import EditSpotForm from "./components/Spots/EditForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,9 @@ function App() {
       </Route>
       <Route exact path="/signup">
         <SignupFormPage />
+      </Route>
+      <Route exact path='/editSpot'>
+        <EditSpotForm />
       </Route>
       <Route exact path='/newSpot'>
       <NewSpotForm />

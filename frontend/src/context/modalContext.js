@@ -6,8 +6,9 @@ import { createContext, useContext, useState } from "react";
 
     export default function ModalProvider(props){
         const [modal, setModal] = useState(null)
+        const [options, setOptions] = useState({})
         return(
-        <ModalContext.Provider value={{modal, setModal}}>
+        <ModalContext.Provider value={{modal, setModal, options, setOptions}}>
             {props.children}
         </ModalContext.Provider>
         )

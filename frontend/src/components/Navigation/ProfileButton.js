@@ -39,7 +39,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button id="profile" onClick={openMenu}>
+      <button className="user-drop" id="profile" onClick={openMenu}>
       <i className="fa-solid fa-user"></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>

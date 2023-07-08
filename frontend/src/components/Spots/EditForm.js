@@ -4,8 +4,8 @@ import * as spotActions from '../../store/spots'
 import {useHistory} from 'react-router-dom'
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
-const EditSpotForm = ({spot, hideForm}) => {
-const {spotId} = useParams()
+const EditSpotForm = () => {
+const spot = useSelector(state => state.spots.detailedSpot)
 const dispatch = useDispatch();
 const history = useHistory()
 const [address, setAddress] = useState(spot.address)
@@ -30,7 +30,7 @@ const updateDescription = (e) => setDescription(e.target.value)
 const updatePrice = (e) => setPrice(e.target.value)
 
 const handleCancelClick = (e) => {
-    hideForm()
+    history.push('/spots/current')
 };
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,9 +47,8 @@ const handleSubmit = async (e) => {
         price
     }
     let editedSpot = await dispatch(spotActions.editSpot(spot.id, payload))
-    dispatch(spotActions.fetchSpotDetails(spotId))
+    dispatch(spotActions.fetchSpotDetails(spot.id))
     if(editedSpot && editedSpot.id){
-        hideForm()
         history.push(`/spots/${spot.id}`)
     } else {
         const res = await editedSpot.json()

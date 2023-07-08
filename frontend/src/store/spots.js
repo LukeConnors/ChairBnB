@@ -18,8 +18,8 @@ export const allSpotsSelector = (state) => {
     return allSpots;
 };
 
+export const spotDetailsSelector = () => (state) => state.spots.detailedSpot
 
-export const spotDetailsSelector = () => (state) => state.spots.detailedSpot || {};
 export const userSpotsSelector = (state) => {
    return state.spots.userSpots
 }

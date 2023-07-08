@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
 import { useModalContext } from '../../context/modalContext';
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function SignupFormPage() {
     const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function SignupFormPage() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
     const { setModal } = useModalContext();
+    const history = useHistory();
 
 if (sessionUser) return <Redirect to="/" />;
 
@@ -23,36 +25,39 @@ const handleCancelClick = (e) => {
   setModal(null)
   };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
-    if(password === confirmPassword) {
-        setErrors({});
-        return dispatch(
-            sessionActions.signup({
-                email,
-                username,
-                firstName,
-                lastName,
-                password
-            })
-        ).catch(async (res) => {
-            const data = await res.json();
-            if(data && data.errors){
-                setErrors(data.errors);
-            }
-        });
-    }
-    return setErrors({
-        confirmPassword: "Confirm password field must be the same as the Password field."
-    });
-  };
 
-  return (
-    <div className="container">
-      <h1 className="log-in">Sign Up</h1>
+    const passErrors = {};
+    if(password !== confirmPassword){
+      passErrors.password = 'Confirm Password must match Password'
+      setErrors(passErrors)
+    }
+
+  const payload ={
+     email,
+    username,
+    firstName,
+    lastName,
+    password
+    }
+let newUser = await dispatch(sessionActions.signup(payload))
+if(newUser && newUser.errors){
+  const res = await newUser
+  console.log(res, 'THIS IS OUR BAD THING')
+  setErrors(res.errors)
+} else {
+  setModal(null)
+  history.push('/')
+  }
+}
+
+return (
+  <div className="signup-container">
+      <h1 className="sign-up-title">Sign Up</h1>
       <form onSubmit={handleSubmit}>
       <div className="form-row">
-        {errors.email && <p className="errors">{errors.email}</p>}
+        {errors?.email && <p className="errors">{errors?.email}</p>}
         <label>
           Email
         </label>
@@ -64,7 +69,7 @@ const handleCancelClick = (e) => {
             />
           </div>
         <div className="form-row">
-        {errors.username && <p className="errors">{errors.username}</p>}
+        {errors?.username && <p className="errors">{errors?.username}</p>}
         <label>
           Username
         </label>
@@ -76,7 +81,7 @@ const handleCancelClick = (e) => {
             />
           </div>
         <div className="form-row">
-        {errors.firstName && <p className="errors">{errors.firstName}</p>}
+        {errors?.firstName && <p className="errors">{errors?.firstName}</p>}
         <label>
           First Name
         </label>
@@ -85,10 +90,10 @@ const handleCancelClick = (e) => {
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             // required
-          />
+            />
         </div>
         <div className="form-row">
-        {errors.lastName && <p className="errors">{errors.lastName}</p>}
+        {errors?.lastName && <p className="errors">{errors?.lastName}</p>}
         <label>
           Last Name
         </label>
@@ -97,10 +102,10 @@ const handleCancelClick = (e) => {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             // required
-          />
+            />
         </div>
         <div className="form-row">
-        {errors.password && <p className="errors">{errors.password}</p>}
+        {errors?.password && <p className="errors">{errors?.password}</p>}
         <label>
           Password
         </label>
@@ -109,10 +114,10 @@ const handleCancelClick = (e) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             // required
-          />
+            />
         </div>
         <div className="form-row">
-        {errors.confirmPassword && <p className="errors">{errors.confirmPassword}</p>}
+        {errors?.confirmPassword && <p className="errors">{errors?.confirmPassword}</p>}
         <label>
           Confirm Password
         </label>
@@ -121,7 +126,7 @@ const handleCancelClick = (e) => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             // required
-          />
+            />
         </div>
         <div>
         <button className='sign-button' type="submit">Sign Up</button>
@@ -130,6 +135,6 @@ const handleCancelClick = (e) => {
       </form>
     </div>
   );
-}
+};
 
-export default SignupFormPage;
+  export default SignupFormPage;

@@ -34,7 +34,7 @@ const updatePrice = (e) => setPrice(e.target.value)
 const updateUrl = (e) => setUrl(e.target.value)
 
 const handleCancelClick = (e) => {
-setModal(null)
+history.push('/')
 };
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,20 +62,23 @@ const handleSubmit = async (e) => {
     }
     let newSpot = await dispatch(spotActions.createSpot(payload))
     if(newSpot && newSpot.id){
-        history.push(`/`)
+        history.push(`/spots/${newSpot.id}`)
     } else {
       const res = await newSpot.json()
       setErrors(res.errors)
     }
     };
     return (
-        <div className="form">
+      <div className="form">
+          <h1>Create a New Spot</h1>
           <form onSubmit={handleSubmit}>
+          <h3>Where's your chair located?</h3>
+            <p>Guests will only get your exact address one they have booked a reservation:</p>
           <div className="errors">{errors?.address}</div>
             <input
               type="text"
               className="form-input"
-              placeholder="Address"
+              placeholder="Street Address"
               value={address}
               onChange={updateAddress}
             />
@@ -119,21 +122,27 @@ const handleSubmit = async (e) => {
               value={lng}
               onChange={updateLng}
             />
+            <h3>Describe your place to guests</h3>
+            <p>Mention the best features of your chair, any special amenities like fast wifi or comfortable rear parking:</p>
+            <div className="errors">{errors?.description}</div>
+            <textarea
+            className="form-input"
+             placeholder="Description (Please write at least 30 characters)"
+             value={description}
+            onChange={updateDescription}
+            />
+            <h3>Create a title for your spot</h3>
+            <p>Catch guests' attention with a spot title that highlights what makes your place special:</p>
             <div className="errors">{errors?.name}</div>
             <input
               type="text"
               className="form-input"
-              placeholder="Name"
+              placeholder="Name of your spot"
               value={name}
               onChange={updateName}
             />
-            <div className="errors">{errors?.description}</div>
-            <textarea
-            className="form-input"
-             placeholder="Description"
-             value={description}
-            onChange={updateDescription}
-            />
+            <h3>Set a base price for your spot</h3>
+            <p>Competitive pricing can help your listing stand out and rank higher in search results:</p>
             <div className="errors">{errors?.price}</div>
             <input
               type="number"
