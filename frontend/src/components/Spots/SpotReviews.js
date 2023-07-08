@@ -24,7 +24,7 @@ let hasReview = false
 
 
 reviews.forEach(review => {
-if(user.id === review.userId){
+if(!user || user.id === review.userId ){
 hasReview = true
 }
 })

@@ -7,7 +7,7 @@ export const SET_SPOTS = "spots/SET_SPOTS"
 export const ADD_SPOT = "spots/ADD_SPOT"
 export const UPDATE_SPOT = "spots/UPDATE_SPOT"
 export const DELETE_SPOT = "spots/DELETE_SPOT"
-export const ADD_SPOT_IMAGES = "spots/ADD_SPOT_IMAGES"
+export const ADD_SPOT_IMAGE = "spots/ADD_SPOT_IMAGE"
 
 // selectors
 export const allSpotsSelector = (state) => {
@@ -64,9 +64,10 @@ const deleteSpot = (spotId) => ({
 
 })
 
-const addImages = (images) => ({
-    type: ADD_SPOT_IMAGES,
-    images
+// add images to a spot
+const addImage = (image) => ({
+    type: ADD_SPOT_IMAGE,
+    payload: image
 })
 
 
@@ -134,15 +135,21 @@ export const createSpot = (payload) => async (dispatch) => {
     }
 }
 
-export const createImages = (spotId, payload) => async (dispatch) => {
-const res = await csrfFetch(`/api/spots/${spotId}/images`, {
-    method: "POST",
-    body: JSON.stringify(payload)
-});
-if(res.ok){
-    const newImages = await res.json()
-    dispatch(addImages(newImages))
- }
+export const createImage = (spotId, payload) => async (dispatch) => {
+    try{
+        const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+            method: "POST",
+            body: JSON.stringify(payload)
+        });
+        if(res.ok){
+            const newImage = await res.json()
+            dispatch(addImage(newImage))
+            return newImage
+         }
+
+    } catch (e){
+        return e
+    }
 }
 
 // delete a spot owned by the logged in user
@@ -206,10 +213,10 @@ const spotsReducer = (state = initialState, action) => {
             return updatedSpot;
 
 
-        case ADD_SPOT_IMAGES:
+        case ADD_SPOT_IMAGE:
             const newImage = action.payload
             return {
-                ...state.detailedSpot.SpotImages,
+                ...state.spots.detailedSpot.SpotImages,
                     newImage
             }
 

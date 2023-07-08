@@ -15,22 +15,20 @@ const SpotDetails = () => {
     const {spotId} = useParams();
     const user = useSelector(userSelector)
     const spot = useSelector(state => state.spots.detailedSpot)
-    const [showEditSpotForm, setShowEditSpotForm] = useState(false)
-    const [showReviewForm, setShowReviewForm] = useState(false)
+    // const [showEditSpotForm, setShowEditSpotForm] = useState(false)
+    // const [showReviewForm, setShowReviewForm] = useState(false)
     const { setModal } = useModalContext();
 
 
     useEffect(() => {
     dispatch(spotActions.fetchSpotDetails(spotId))
-    setShowEditSpotForm(false)
-    setShowReviewForm(false)
     }, [dispatch, spotId])
 
 
 
-    const handleNewReview = () => {
-      setShowReviewForm(!showEditSpotForm)
-    }
+    // const handleNewReview = () => {
+    //   setShowReviewForm(!showEditSpotForm)
+    // }
 
     const handleReserve = () => {
       window.alert('Feature coming soon.')
@@ -51,14 +49,16 @@ const SpotDetails = () => {
     return (
       <div className="details">
         <h1>{name}</h1>
-        <h2>{city}, {state}, {country}</h2>
+        <h2 className="location">{city}, {state}, {country}</h2>
         <div className="img-container">
         {SpotImages && SpotImages.length > 0 ? (
         <>
       <img className='main-img' key={SpotImages[0].id} src={SpotImages[0].url} alt={name} />
+      <div className="small-images">
       {SpotImages.slice(1).map(image => (
-        <img className='main-img' key={image.id} src={image.url} alt={name} />
+        <img className='secondary-img' key={image.id} src={image.url} alt={name} />
          ))}
+      </div>
         </>
       ) : (
       <p>No images available</p>
@@ -67,8 +67,8 @@ const SpotDetails = () => {
 
       <div className="chair-details">
         <div className="chair-info">
-          {Owner && <p>Hosted by: {Owner?.firstName} {Owner?.lastName}</p>}
-          <p>{description}</p>
+          {Owner && <p className="host">Hosted by: {Owner?.firstName} {Owner?.lastName}</p>}
+          <p className="des">{description}</p>
         </div>
 
         <div className="star-cont">
@@ -95,9 +95,9 @@ const SpotDetails = () => {
               }}>
                 Delete Spot
               </button>
-              {showEditSpotForm && (
+              {/* {showEditSpotForm && (
                 <EditSpotForm spot={spot} hideForm={() => setShowEditSpotForm(false)} />
-              )}
+              )} */}
             </div>
           ) : (
             <div className="jerry">
@@ -126,7 +126,7 @@ const SpotDetails = () => {
     return (
       <div className="details">
         <h1>{name}</h1>
-        <h2>{city}, {state}, {country}</h2>
+        <h2 className="location">{city}, {state}, {country}</h2>
         <div className="img-container">
         {SpotImages && SpotImages.length > 0 ? (
         <>
@@ -142,8 +142,8 @@ const SpotDetails = () => {
 
       <div className="chair-details">
         <div className="chair-info">
-          {Owner && <p>Hosted by: {Owner?.firstName} {Owner?.lastName}</p>}
-          <p>{description}</p>
+          {Owner && <p className="host">Hosted by: {Owner?.firstName} {Owner?.lastName}</p>}
+          <p className="des">{description}</p>
         </div>
 
         <div className="star-cont">
@@ -170,9 +170,9 @@ const SpotDetails = () => {
               }}>
                 Delete Spot
               </button>
-              {showEditSpotForm && (
+              {/* {showEditSpotForm && (
                 <EditSpotForm spot={spot} hideForm={() => setShowEditSpotForm(false)} />
-              )}
+              )} */}
             </div>
           ) : (
             <div className="jerry">

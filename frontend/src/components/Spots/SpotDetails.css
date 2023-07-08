@@ -2,14 +2,41 @@ button {
     width: auto;
 }
 
+.details{
+  padding-left: 75px;
+  padding-right: 75px;
+}
+
 .loading{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 40px;
 }
 
-img {
-    height: 300px;
-    width: 300px;
+.main-img {
+  display: flex;
+    height: 705px;
+    width: 850px;
+    margin-right: 5px
+}
+
+.secondary-img{
+  height: 350px;
+  width: 370px;
+  flex-basis: calc(33%);
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.img-container {
+  display: flex;
+  max-height: 710px;
+}
+
+.small-images {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex-basis: calc(50% - auto);
 }
 
 .reviews{
@@ -65,6 +92,8 @@ img {
   margin: 5px;
   padding: 5px;
   border-radius: 20px;
+  margin-right: 135px;
+  margin-top: 40px;
 }
 
 .reserve {
@@ -106,4 +135,16 @@ img {
   border-radius: 20px;
   border: 1px solid black;
   background-color: rgb(178, 35, 35);
+}
+
+.location{
+  margin-bottom: 30px;
+}
+
+.host {
+  font-size: 36px;
+}
+
+.des{
+  font-size: 20px;
 }

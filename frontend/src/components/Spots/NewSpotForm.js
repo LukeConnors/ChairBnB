@@ -41,12 +41,24 @@ const handleSubmit = async (e) => {
 
     const previewImagePayload = {
       url,
-      preview
+      preview: true
     }
 
-    const imagePayload = {
+    const imagePayload1 = {
       url,
-      preview
+      preview: false
+    }
+    const imagePayload2 = {
+      url,
+      preview: false
+    }
+    const imagePayload3 = {
+      url,
+      preview: false
+    }
+    const imagePayload4 = {
+      url,
+      preview: false
     }
 
     const payload = {
@@ -151,6 +163,13 @@ const handleSubmit = async (e) => {
               value={price}
               onChange={updatePrice}
             />
+          <div className="errors"></div>
+          <input
+            type="text"
+            className="form-input"
+            placeholder="PreviewImageURL"
+          />
+
             <div className="form-buttons">
       <button type="submit" className="submit">Create Spot</button>
       <button type="cancel"  className="cancel" onClick={handleCancelClick}>Cancel</button>
