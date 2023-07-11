@@ -1,0 +1,18 @@
+.ed-rev-background{
+background-color: white;
+width: 350px;
+height: 250px;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 20px;
+}
+
+.rev-box {
+margin-bottom: 10px;
+
+}
+
+.ed-stars{
+    margin-bottom: 10px;
+}

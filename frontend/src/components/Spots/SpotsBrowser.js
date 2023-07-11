@@ -45,8 +45,9 @@ function SpotsBrowser() {
                   }
                   alt={`No image set for ${spot?.name}`}
                 />
-              </div>
                 <span className='tool-tip-text'>{spot?.name}</span>
+              </div>
+
               <div className='spot-info'>
                 <div className='info-text-left'>
                   <h3>{spot?.city}, {spot?.state}</h3>

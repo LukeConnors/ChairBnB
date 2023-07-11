@@ -10,8 +10,11 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    flex-basis: calc(25% - 20px);
+    flex-basis: calc(30% - 20px);
     cursor: pointer;
+    max-height: 500px;
+    max-width: 300px;
+    transition: transform 0.2s ease-in-out;
   }
 
   .i-container {
@@ -20,10 +23,12 @@
 
   .s-img {
     width: 100%;
-    transition: transform 0.2s ease-in-out;
+    max-height: 300px;
+    max-width: 300px;
+    border-radius: 10px;
   }
 
-  .s-img:hover {
+  .t-container:hover {
     transform: scale(1.02);
   }
 

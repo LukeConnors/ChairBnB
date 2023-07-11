@@ -14,14 +14,14 @@ button {
 
 .main-img {
   display: flex;
-    height: 705px;
-    width: 850px;
+    height: 605px;
+    width: 700px;
     margin-right: 5px
 }
 
 .secondary-img{
-  height: 350px;
-  width: 370px;
+  height: 300px;
+  width: 300px;
   flex-basis: calc(33%);
   margin-bottom: 5px;
   margin-right: 5px;
@@ -147,4 +147,8 @@ button {
 
 .des{
   font-size: 20px;
+}
+
+img{
+  object-fit: cover;
 }

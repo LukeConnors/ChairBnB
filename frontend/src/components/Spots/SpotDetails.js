@@ -84,7 +84,7 @@ const SpotDetails = () => {
         </div>
           </div>
         <div>
-          {user && user.id === spot.ownerId ? (
+          {user && user.id === spot.ownerId ? ( 
             <div>
               <button className="ed-spot" onClick={handleEditSpot}>
                 Edit Spot

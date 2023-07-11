@@ -4,7 +4,7 @@
   }
 
   .form-input,
-  textarea {
+  .des-form-input {
     height: 50px;
     width: 100%;
     padding: 8px;
@@ -16,7 +16,7 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   }
 
-  textarea {
+  .des-form-input {
     resize: vertical;
     border-color: lightgray;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;

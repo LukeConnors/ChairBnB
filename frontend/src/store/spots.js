@@ -127,6 +127,7 @@ export const createSpot = (payload) => async (dispatch) => {
         });
         if(res.ok){
             const newSpot = await res.json();
+            // create a post image fetch
             dispatch(addSpot(newSpot))
             return newSpot
         }
@@ -213,12 +214,10 @@ const spotsReducer = (state = initialState, action) => {
             return updatedSpot;
 
 
-        case ADD_SPOT_IMAGE:
-            const newImage = action.payload
-            return {
-                ...state.spots.detailedSpot.SpotImages,
-                    newImage
-            }
+        // case ADD_SPOT_IMAGE:
+        //     const newImage = action.payload
+        //     newState.detailedSpot.spotImages[newImage.id] = newImage
+        //     return newState
 
 
         default:
