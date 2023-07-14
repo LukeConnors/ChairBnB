@@ -60,100 +60,124 @@ const handleCancelClick = (e) => {
 };
 
     return (
-        <div className="form">
-            <h1 className="ed-title">Update your spot:</h1>
-            <form onSubmit={handleSubmit}>
-            <div className="errors">{errors?.address}</div>
-            <input
-            type="text"
-            className="form-input"
-            placeholder="Address"
-            min="1"
-            value={address}
-            onChange={updateAddress}
-            >
-            </input>
+        <div className="ns-form">
+      <h1 className="create-title">Edit your spot</h1>
+      <form onSubmit={handleSubmit}>
+        <h3>Where's your chair located?</h3>
+        <p>Guests will only get your exact address one they have booked a reservation:</p>
+        <div className="form-tag">
+          <h2>Street Address</h2>
+        </div>
+        <div className="errors">{errors?.address}</div>
+        <input
+          type="text"
+          className="form-input"
+          placeholder="Street Address"
+          value={address}
+          onChange={updateAddress}
+        />
+        <div className="titles-container">
+          <div className="city-title">
+            <h2>City</h2>
             <div className="errors">{errors?.city}</div>
-            <input
+          </div>
+          <div className="state-title">
+            <h2 className="state-tag">State</h2>
+            <div className="errors">{errors?.state}</div>
+          </div>
+        </div>
+        <div className="city-state">
+          <input
             type="text"
+            className="city-form-input"
             placeholder="City"
-            className="form-input"
-            min="1"
             value={city}
             onChange={updateCity}
-            >
-            </input>
-            <div className="errors">{errors?.state}</div>
-            <input
+          />
+          <input
             type="text"
-            className="form-input"
+            className="state-form-input"
             placeholder="State"
-            min="1"
             value={state}
             onChange={updateState}
-            >
-            </input>
-            <div className="errors">{errors?.country}</div>
-            <input
-            type="text"
-            className="form-input"
-            placeholder="Country"
-            min="1"
-            value={country}
-            onChange={updateCountry}
-            >
-            </input>
+          />
+        </div>
+        <div className="form-tag">
+          <h2>Country</h2>
+        </div>
+        <div className="errors">{errors?.country}</div>
+        <input
+          type="text"
+          className="form-input"
+          placeholder="Country"
+          value={country}
+          onChange={updateCountry}
+        />
+
+        <div className="titles-container">
+          <div className="city-title">
+            <h2>Latitude</h2>
             <div className="errors">{errors?.lat}</div>
-            <input
+          </div>
+          <div className="state-title">
+            <h2 className="state-tag">Longitude</h2>
+            <div className="errors">{errors?.lng}</div>
+          </div>
+        </div>
+        <div className="city-state">
+          <input
             type="number"
-            className="form-input"
+            className="city-form-input"
             placeholder="Latitude"
-            // min="4"
-            // max="12"
             value={lat}
             onChange={updateLat}
-            >
-            </input>
-            <div className="errors">{errors?.lng}</div>
-            <input
+          />
+          <input
             type="number"
             className="form-input"
             placeholder="Longitude"
-            // min="4"
-            // max="12"
             value={lng}
             onChange={updateLng}
-            >
-            </input>
-            <div className="errors">{errors?.name}</div>
-            <input
-            type="text"
-            className="form-input"
-            placeholder="Name"
-            min="1"
-            value={name}
-            onChange={updateName}
-            >
-            </input>
-            <div className="errors">{errors?.description}</div>
-            <textarea
-            type="text"
-            className="des-form-input"
-            placeholder="Description"
-            min="1"
-            value={description}
-            onChange={updateDescription}
-            />
-            <div className="errors">{errors?.price}</div>
-            <input
-            type="number"
-            className="form-input"
-            placeholder="Price"
-            min="1"
-            value={price}
-            onChange={updatePrice}
-            >
-            </input>
+          />
+        </div>
+        <h3>Describe your place to guests</h3>
+        <p>Mention the best features of your chair, any special amenities like fast wifi or comfortable rear parking:</p>
+        <div className="form-tag">
+          <h2>Description</h2>
+        </div>
+        <div className="errors">{errors?.description}</div>
+        <textarea
+          className="des-form-input"
+          placeholder="Description (Please write at least 30 characters)"
+          value={description}
+          onChange={updateDescription}
+        />
+        <h3>Create a title for your spot</h3>
+        <p>Catch guests' attention with a spot title that highlights what makes your place special:</p>
+        <div className="form-tag">
+          <h2>Name</h2>
+        </div>
+        <div className="errors">{errors?.name}</div>
+        <input
+          type="text"
+          className="form-input"
+          placeholder="Name of your spot"
+          value={name}
+          onChange={updateName}
+        />
+        <h3>Set a base price for your spot</h3>
+        <p>Competitive pricing can help your listing stand out and rank higher in search results:</p>
+        <div className="form-tag">
+          <h2>Price</h2>
+        </div>
+        <div className="errors">{errors?.price}</div>
+        <input
+          type="number"
+          className="form-input"
+          placeholder="Price"
+          value={price}
+          onChange={updatePrice}
+        />
             <div className="ed-buttons">
             <button type="submit" className="ed-submit">Update Spot</button>
             <button type="cancel" className="ed-cancel" onClick={handleCancelClick}>

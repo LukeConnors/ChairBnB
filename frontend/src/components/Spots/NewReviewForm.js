@@ -82,7 +82,7 @@ const NewReviewForm = () => {
                 <h4> &#160;Stars</h4>
                 </div>
                 <div>
-                <button className="sub" type="submit" >Submit your review</button>
+                <button className="sub" type="submit" disabled={disabled}>Submit your review</button>
                 <button className="canc" type="cancel" onClick={handleCancelClick}>
                     Cancel
                 </button>
