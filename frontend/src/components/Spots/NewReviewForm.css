@@ -13,6 +13,7 @@
     border-radius: 5px;
     border: 1px solid gray;
     height: 25px;
+    margin-left: 40px;
 }
 
 
@@ -24,4 +25,15 @@
 
 .canc{
     border-radius: 10px;
+}
+
+.rev-box{
+    margin-bottom: 25px;
+    height: 60px;
+}
+
+.rev-stars{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }

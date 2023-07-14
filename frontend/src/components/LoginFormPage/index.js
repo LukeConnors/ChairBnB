@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,8 +13,19 @@ const [credential, setCredential] = useState("");
 const [password, setPassword] = useState("");
 const [errors, setErrors] = useState({});
 const [loginError, setLoginError] = useState(null);
+const [disabled, setDisabled] = useState(true)
 const history = useHistory()
 const { setModal } = useModalContext();
+
+
+useEffect(() => {
+  if(credential.length >= 4 && password.length >= 6){
+    setDisabled(false)
+  } else {
+    setDisabled(true)
+  }
+}, [credential, password])
+
 
 if (sessionUser) return <Redirect to="/" />;
 
@@ -41,6 +52,9 @@ const handleSubmit = (e) => {
       setLoginError("The provided credentials were invalid"); // Set login error
     });
 };
+
+
+
 
 
   const handleDemoLogin = (e) => {
@@ -81,7 +95,7 @@ const handleSubmit = (e) => {
         </div>
           <a className='demo' onClick={handleDemoLogin}>Demo User</a>
           <div>
-        <button className='log-button' type="submit">Log In</button>
+        <button className='log-button' type="submit" disabled={disabled}>Log In</button>
         <button className='cancel-button' type='cancel' onClick={handleCancelClick}>Cancel</button>
           </div>
       </form>

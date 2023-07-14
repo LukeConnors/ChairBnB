@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect ,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
@@ -15,9 +15,20 @@ function SignupFormPage() {
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [disabled, setDisabled] = useState(true)
     const [errors, setErrors] = useState({});
     const { setModal } = useModalContext();
     const history = useHistory();
+
+
+
+    useEffect(() => {
+      if(username.length >= 4 && password.length >= 6){
+        setDisabled(false)
+      } else {
+        setDisabled(true)
+      }
+    }, [username, password])
 
 if (sessionUser) return <Redirect to="/" />;
 
@@ -129,7 +140,7 @@ return (
             />
         </div>
         <div>
-        <button className='sign-button' type="submit">Sign Up</button>
+        <button className='sign-button' type="submit" disabled={disabled}>Sign Up</button>
         <button className="cancel-button" type="cancel" onClick={handleCancelClick}>Cancel</button>
         </div>
       </form>

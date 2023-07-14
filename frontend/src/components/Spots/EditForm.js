@@ -30,9 +30,6 @@ const updateName = (e) => setName(e.target.value)
 const updateDescription = (e) => setDescription(e.target.value)
 const updatePrice = (e) => setPrice(e.target.value)
 
-const handleCancelClick = (e) => {
-    history.push('/spots/current')
-};
 const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,8 +53,11 @@ const handleSubmit = async (e) => {
         setErrors(res.errors)
         console.log(errors)
     }
-    };
+};
 
+const handleCancelClick = (e) => {
+    history.push(`/spots/${spot.id}`)
+};
 
     return (
         <div className="form">

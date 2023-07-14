@@ -118,11 +118,14 @@ const NewSpotForm = () => {
 
   };
   return (
-    <div className="form">
-      <h1>Create a New Spot</h1>
+    <div className="ns-form">
+      <h1 className="create-title">Create a New Spot</h1>
       <form onSubmit={handleSpotSubmit}>
         <h3>Where's your chair located?</h3>
         <p>Guests will only get your exact address one they have booked a reservation:</p>
+        <div className="form-tag">
+          <h2>Street Address</h2>
+        </div>
         <div className="errors">{errors?.address}</div>
         <input
           type="text"
@@ -131,22 +134,35 @@ const NewSpotForm = () => {
           value={address}
           onChange={updateAddress}
         />
-        <div className="errors">{errors?.city}</div>
-        <input
-          type="text"
-          className="form-input"
-          placeholder="City"
-          value={city}
-          onChange={updateCity}
-        />
-        <div className="errors">{errors?.state}</div>
-        <input
-          type="text"
-          className="form-input"
-          placeholder="State"
-          value={state}
-          onChange={updateState}
-        />
+        <div className="titles-container">
+          <div className="city-title">
+            <h2>City</h2>
+            <div className="errors">{errors?.city}</div>
+          </div>
+          <div className="state-title">
+            <h2 className="state-tag">State</h2>
+            <div className="errors">{errors?.state}</div>
+          </div>
+        </div>
+        <div className="city-state">
+          <input
+            type="text"
+            className="city-form-input"
+            placeholder="City"
+            value={city}
+            onChange={updateCity}
+          />
+          <input
+            type="text"
+            className="state-form-input"
+            placeholder="State"
+            value={state}
+            onChange={updateState}
+          />
+        </div>
+        <div className="form-tag">
+          <h2>Country</h2>
+        </div>
         <div className="errors">{errors?.country}</div>
         <input
           type="text"
@@ -155,24 +171,38 @@ const NewSpotForm = () => {
           value={country}
           onChange={updateCountry}
         />
-        <div className="errors">{errors?.lat}</div>
-        <input
-          type="number"
-          className="form-input"
-          placeholder="Latitude"
-          value={lat}
-          onChange={updateLat}
-        />
-        <div className="errors">{errors?.lng}</div>
-        <input
-          type="number"
-          className="form-input"
-          placeholder="Longitude"
-          value={lng}
-          onChange={updateLng}
-        />
+
+        <div className="titles-container">
+          <div className="city-title">
+            <h2>Latitude</h2>
+            <div className="errors">{errors?.lat}</div>
+          </div>
+          <div className="state-title">
+            <h2 className="state-tag">Longitude</h2>
+            <div className="errors">{errors?.lng}</div>
+          </div>
+        </div>
+        <div className="city-state">
+          <input
+            type="number"
+            className="city-form-input"
+            placeholder="Latitude"
+            value={lat}
+            onChange={updateLat}
+          />
+          <input
+            type="number"
+            className="form-input"
+            placeholder="Longitude"
+            value={lng}
+            onChange={updateLng}
+          />
+        </div>
         <h3>Describe your place to guests</h3>
         <p>Mention the best features of your chair, any special amenities like fast wifi or comfortable rear parking:</p>
+        <div className="form-tag">
+          <h2>Description</h2>
+        </div>
         <div className="errors">{errors?.description}</div>
         <textarea
           className="des-form-input"
@@ -182,6 +212,9 @@ const NewSpotForm = () => {
         />
         <h3>Create a title for your spot</h3>
         <p>Catch guests' attention with a spot title that highlights what makes your place special:</p>
+        <div className="form-tag">
+          <h2>Name</h2>
+        </div>
         <div className="errors">{errors?.name}</div>
         <input
           type="text"
@@ -192,6 +225,9 @@ const NewSpotForm = () => {
         />
         <h3>Set a base price for your spot</h3>
         <p>Competitive pricing can help your listing stand out and rank higher in search results:</p>
+        <div className="form-tag">
+          <h2>Price</h2>
+        </div>
         <div className="errors">{errors?.price}</div>
         <input
           type="number"
@@ -200,9 +236,12 @@ const NewSpotForm = () => {
           value={price}
           onChange={updatePrice}
         />
-        <form onSubmit={handleSpotSubmit}>
+        <form onSubmit={handleSpotSubmit} className="photo-form">
           <h3>Liven up your spot with photos</h3>
           <p>Submit a link to at least one photo to publish your spot:</p>
+          <div className="form-tag">
+            <h2>Preview/Main Image</h2>
+          </div>
           <div className="errors">{imageErrors?.url}</div>
           <input
             type="text"
@@ -210,6 +249,9 @@ const NewSpotForm = () => {
             placeholder="Preview/Main Image URL"
             onChange={updateUrl}
           />
+          <div className="form-tag">
+            <h2>Image #1 URL</h2>
+          </div>
           <div className="errors">{imageErrors?.url}</div>
           <input
             type="text"
@@ -217,6 +259,9 @@ const NewSpotForm = () => {
             placeholder="Image #1 URL"
             onChange={updateUrl1}
           />
+          <div className="form-tag">
+            <h2>Image #2 URL</h2>
+          </div>
           <div className="errors">{imageErrors?.url}</div>
           <input
             type="text"
@@ -224,6 +269,9 @@ const NewSpotForm = () => {
             placeholder="Image #2 URL"
             onChange={updateUrl2}
           />
+          <div className="form-tag">
+            <h2>Image #3 URL</h2>
+          </div>
           <div className="errors">{imageErrors?.url}</div>
           <input
             type="text"
@@ -231,6 +279,9 @@ const NewSpotForm = () => {
             placeholder="Image #3 URL"
             onChange={updateUrl3}
           />
+          <div className="form-tag">
+            <h2>Image #4 URL</h2>
+          </div>
           <div className="errors">{imageErrors?.url}</div>
           <input
             type="text"

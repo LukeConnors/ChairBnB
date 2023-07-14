@@ -55,8 +55,8 @@ function SpotsBrowser() {
                 </div>
                 <div className='info-text-right'>
                   <i className="fa-solid fa-star" style={{ color: "#b00c0c" }}></i>
-                <h3 className='stars-num'>{spot?.avgStarRating ? spot?.avgStarRating.toFixed(2) : 'New'}</h3>
-              </div>
+                  <h3 className='stars-num'>{spot?.avgStarRating ? spot?.avgStarRating.toFixed(2) : 'New'}</h3>
+                </div>
               </div>
             </div>
           );
@@ -68,27 +68,28 @@ function SpotsBrowser() {
               <div className='image-container'>
                 <img
                   className='spot-img'
+                  onClick={redirectToSpot}
                   src={
                     spot?.previewImg ||
                     'https://res.cloudinary.com/dyt7uoeck/image/upload/v1688189212/download_vnokrd.png'
                   }
                   alt={`No image set for ${spot?.name}`}
                 />
+                <span className='tool-tip-text'>{spot?.name}</span>
               </div>
-              <span className='tool-tip-text'>{spot?.name}</span>
               <div className='spot-info'>
                 <div className='info-text-left'>
                   <h3 className='text'>
                     {spot?.city}, {spot?.state}
                   </h3>
-                    <h3>${spot?.price} per day</h3>
+                  <h3>${spot?.price} per day</h3>
                 </div>
                 <div className='info-text-right'>
                   <i className="fa-solid fa-star" style={{ color: "#b00c0c" }}></i>
-                <h3 className='stars-num'>{spot?.avgStarRating ? spot?.avgStarRating.toFixed(2) : 'New'}</h3>
+                  <h3 className='stars-num'>{spot?.avgStarRating ? spot?.avgStarRating.toFixed(2) : 'New'}</h3>
+                </div>
               </div>
             </div>
-          </div>
           );
         }
       })}

@@ -34,11 +34,37 @@ function SpotReviews() {
   }, [dispatch])
 
 
-  if (reviews.length === 0 && user.id !== spot.ownerId) {
+
+  if (!user) {
+    return (
+      <div className="reviews-container">
+        {sortedReviews.map((review) => {
+          const date = new Date(review.updatedAt)
+          const stringDate = date.toDateString()
+          const month = stringDate.slice(4, 7)
+          const year = date.getFullYear()
+          return (
+            <div key={review.id}>
+              <h3>{review?.User?.firstName}</h3>
+              <h4>{month} {year}</h4>
+              <p>{review?.review}</p>
+            </div>
+          )
+        })}
+      </div>
+    )
+  } else if (reviews.length === 0 && user.id !== spot.ownerId) {
     return (
       <div>
         <h2>Be the first to post a review!</h2>
+        <div>
+            <button className="post-rev" onClick={(e) => {
+              e.preventDefault();
+              setModal('reviewForm')
+            }}>Post a review</button>
+          </div>
       </div>
+
     )
   } else if (user.id !== spot.ownerId) {
     return (
@@ -60,23 +86,22 @@ function SpotReviews() {
             return (
               <div key={review.id}>
                 <h3>{review?.User?.firstName}</h3>
-                <h4>{month}{year}</h4>
+                <h4>{month} {year}</h4>
                 <p>{review?.review}</p>
               </div>
             )
           } else if (review.userId === user.id) {
 
-            const handleDeleteReview = async () => {
-              await dispatch(reviewActions.removeReview(review.id))
-              dispatch(reviewActions.getSpotReviews(spotId))
-              history.push(`/spots/${spotId}`)
+            const handleDeleteReview = async (e) => {
+              e.preventDefault()
+              setModal('deleteReview')
             }
 
             return (
               <div key={review.id}>
                 <div className="userReview-name">
                   <h3>{review?.User?.firstName}</h3>
-                  <h4>{month}  {year}</h4>
+                  <h4>{month} {year}</h4>
                 </div>
                 <div className="userReview-review">
                   <p>{review?.review}</p>
@@ -93,11 +118,12 @@ function SpotReviews() {
             return (
               <div key={review.id}>
                 <h3>{review?.User?.firstName}</h3>
-                <h4>{month}  {year}</h4>
+                <h4>{month} {year}</h4>
                 <p>{review?.review}</p>
               </div>
             )
           }
+
         })}
       </div>
     )

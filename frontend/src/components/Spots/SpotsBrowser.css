@@ -32,11 +32,12 @@
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.5s ease;
+    position: absolute;
   }
 
   .tool-tip-text::before{
+    position: fixed;
     content: '';
-    position: absolute;
     left: 50%;
     top: 100%;
     transform: translateX(-50%);
@@ -44,9 +45,11 @@
     border-color: #000 #0000 #0000 #0000;
   }
 
-  .spot-tile:hover > .tool-tip-text{
-    top: -130%;
+  .spot-tile:hover .tool-tip-text{
+    left: 50%;
+    top: 20%;
     visibility: visible;
+    opacity: 1;
   }
 
   .spot-tile:hover {
