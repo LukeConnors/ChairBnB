@@ -39,7 +39,7 @@ const SpotDetails = () => {
   const { name, city, state, country, SpotImages, Owner, description, price, avgStarRating, numReviews } = spot;
 
   const handleReviewCount = () => {
-    console.log(numReviews, 'THIS IS THE NUMBER OF REVIEWS!!!')
+    console.log(typeof numReviews, 'THIS IS THE NUMBER OF REVIEWS!!!')
     if (numReviews === 0) {
       return null
     } else if (numReviews === 1) {
