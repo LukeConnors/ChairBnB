@@ -40,9 +40,9 @@ const SpotDetails = () => {
 
   const handleReviewCount = () => {
     console.log(typeof numReviews, 'THIS IS THE NUMBER OF REVIEWS!!!')
-    if (numReviews === 0) {
+    if (+numReviews === 0) {
       return null
-    } else if (numReviews === 1) {
+    } else if (+numReviews === 1) {
       return (
         <>
           <p className="dot">·</p>
@@ -51,7 +51,7 @@ const SpotDetails = () => {
           </p>
         </>
       )
-    } else if (numReviews > 1) {
+    } else if (+numReviews > 1) {
       return (
         <>
           <p className="dot">·</p>
