@@ -33,8 +33,8 @@ useEffect(() => {
             <h2 className='del-title'>Confirm Delete</h2>
             <p className="del-message">Are you sure you want to remove this Review?</p>
             <div className='del-container'>
-            <button className="yes-button" onClick={handleDeleteReview}>Yes (Delete Spot)</button>
-            <button className="no-button" onClick={handleCancelClick}>No (Keep Spot)</button>
+            <button className="yes-button" onClick={handleDeleteReview}>Yes (Delete Review)</button>
+            <button className="no-button" onClick={handleCancelClick}>No (Keep Review)</button>
             </div>
         </div>
     )
