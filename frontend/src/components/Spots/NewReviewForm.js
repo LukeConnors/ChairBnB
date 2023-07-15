@@ -43,8 +43,9 @@ const NewReviewForm = () => {
         let newReview = await dispatch(reviewActions.createReview(spot.id, payload))
         if(newReview && newReview.id){
             dispatch(reviewActions.getSpotReviews(spot.id))
+            dispatch(spotActions.fetchSpotDetails(spot.id))
             setModal(null)
-            history.push(`/spots/${spot.id}`)
+            // history.push(`/spots/${spot.id}`)
         } else {
             let res = await newReview.json()
             if(newReview.status >= 500){
