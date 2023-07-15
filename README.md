@@ -5,7 +5,7 @@ https://lukes-chairbnb.onrender.com/
 
 ## Database Schema Design
 
-`https://dbdiagram.io/d/640a7f7e296d97641d86d43e`
+https://dbdiagram.io/d/640a7f7e296d97641d86d43e
 
 ## API Documentation
 
