@@ -15,8 +15,6 @@ const SpotDetails = () => {
   const { spotId } = useParams();
   const user = useSelector(userSelector)
   const spot = useSelector(state => state.spots.detailedSpot)
-  // const [showEditSpotForm, setShowEditSpotForm] = useState(false)
-  // const [showReviewForm, setShowReviewForm] = useState(false)
   const { setModal } = useModalContext();
 
 
@@ -24,11 +22,6 @@ const SpotDetails = () => {
     dispatch(spotActions.fetchSpotDetails(spotId))
   }, [dispatch, spotId])
 
-
-
-  // const handleNewReview = () => {
-  //   setShowReviewForm(!showEditSpotForm)
-  // }
 
   const handleReserve = () => {
     window.alert('Feature coming soon.')

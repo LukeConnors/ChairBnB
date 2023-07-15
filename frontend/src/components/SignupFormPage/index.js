@@ -23,12 +23,16 @@ function SignupFormPage() {
 
 
     useEffect(() => {
-      if(username.length >= 4 && password.length >= 6){
+      if(email.length > 0
+        && firstName.length > 0
+        && lastName.length > 0
+        && username.length >= 4
+        && password.length >= 6){
         setDisabled(false)
       } else {
         setDisabled(true)
       }
-    }, [username, password])
+    }, [email, firstName, lastName, username, password])
 
 if (sessionUser) return <Redirect to="/" />;
 
