@@ -1,4 +1,4 @@
-// constants
+
 import { csrfFetch } from "./csrf"
 
 export const SET_SPOT_DETAILS = "spots/SET_SPOT_DETAILS"

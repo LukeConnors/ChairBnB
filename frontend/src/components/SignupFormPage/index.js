@@ -27,12 +27,13 @@ function SignupFormPage() {
         && firstName.length > 0
         && lastName.length > 0
         && username.length >= 4
-        && password.length >= 6){
+        && password.length >= 6
+        && password === confirmPassword){
         setDisabled(false)
       } else {
         setDisabled(true)
       }
-    }, [email, firstName, lastName, username, password])
+    }, [email, firstName, lastName, username, password, confirmPassword])
 
 if (sessionUser) return <Redirect to="/" />;
 
@@ -44,7 +45,7 @@ const handleCancelClick = (e) => {
     e.preventDefault();
 
     const passErrors = {};
-    if(password !== confirmPassword){
+    if(confirmPassword !== password){
       passErrors.password = 'Confirm Password must match Password'
       setErrors(passErrors)
     }
@@ -56,15 +57,16 @@ const handleCancelClick = (e) => {
     lastName,
     password
     }
+
 let newUser = await dispatch(sessionActions.signup(payload))
 if(newUser && newUser.errors){
   const res = await newUser
-  console.log(res, 'THIS IS OUR BAD THING')
   setErrors(res.errors)
 } else {
   setModal(null)
   history.push('/')
   }
+
 }
 
 return (

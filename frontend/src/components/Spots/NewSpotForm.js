@@ -92,9 +92,8 @@ const NewSpotForm = () => {
     if (newSpot && newSpot.id) {
       if (url !== '') {
         let mainImage = await dispatch(spotActions.createImage(newSpot.id, previewImagePayload))
-        if (mainImage && !mainImage.id) {
+
           setImageErrors(mainImage.imageErrors)
-        }
       }
 
       if (url1 !== '') {

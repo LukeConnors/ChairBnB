@@ -31,6 +31,7 @@ const SpotDetails = () => {
     history.push('/editSpot')
 
   }
+  
   if (!spot?.name) {
     return <div className="loading">Loading spot details...</div>;
   }
