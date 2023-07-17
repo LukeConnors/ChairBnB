@@ -31,7 +31,7 @@ const SpotDetails = () => {
     history.push('/editSpot')
 
   }
-  
+
   if (!spot?.name) {
     return <div className="loading">Loading spot details...</div>;
   }
@@ -147,9 +147,11 @@ const SpotDetails = () => {
           {SpotImages && SpotImages.length > 0 ? (
             <>
               <img className='main-img' key={SpotImages[0].id} src={SpotImages[0].url} alt={name} />
-              {SpotImages.slice(1).map(image => (
-                <img className='main-img' key={image.id} src={image.url} alt={name} />
-              ))}
+              <div className="small-images">
+                {SpotImages.slice(1).map(image => (
+                  <img className='secondary-img' key={image.id} src={image.url} alt={name} />
+                ))}
+              </div>
             </>
           ) : (
             <p>No images available</p>
