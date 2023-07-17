@@ -73,10 +73,10 @@ const SpotDetails = () => {
         <div className="img-container">
           {SpotImages && SpotImages.length > 0 ? (
             <>
-              <img className='main-img' key={SpotImages[0].id} src={SpotImages[0].url} alt={name} />
+              <img className='main-img' key={SpotImages[0]?.id} src={SpotImages[0]?.url} alt={name} />
               <div className="small-images">
                 {SpotImages.slice(1).map(image => (
-                  <img className='secondary-img' key={image.id} src={image.url} alt={name} />
+                  <img className='secondary-img' key={image?.id} src={image?.url} alt={name} />
                 ))}
               </div>
             </>
@@ -146,10 +146,10 @@ const SpotDetails = () => {
         <div className="img-container">
           {SpotImages && SpotImages.length > 0 ? (
             <>
-              <img className='main-img' key={SpotImages[0].id} src={SpotImages[0].url} alt={name} />
+              <img className='main-img' key={SpotImages[0]?.id} src={SpotImages[0]?.url} alt={name} />
               <div className="small-images">
                 {SpotImages.slice(1).map(image => (
-                  <img className='secondary-img' key={image.id} src={image.url} alt={name} />
+                  <img className='secondary-img' key={image?.id} src={image?.url} alt={name} />
                 ))}
               </div>
             </>
